@@ -1,7 +1,7 @@
 dataset: ehrsql
-db_id: mimic3
-train_data_path : dataset/ehrsql/mimic3/train.json
-valid_data_path : dataset/ehrsql/mimic3/valid.json
+db_id: mimic_iii
+train_data_path : dataset/ehrsql/mimic_iii/train.json
+valid_data_path : dataset/ehrsql/mimic_iii/valid.json
 
 exp_name : t5_ehrsql_mimic3_natural_lr0.001_schema
 use_para: true
@@ -16,5 +16,5 @@ add_schema: true
 add_column_type: false
 shuffle_schema: false
 
-use_wandb: true
-wandb_project: ehr-semantic-parsing
+# use_wandb: true
+# wandb_project: ehr-semantic-parsing

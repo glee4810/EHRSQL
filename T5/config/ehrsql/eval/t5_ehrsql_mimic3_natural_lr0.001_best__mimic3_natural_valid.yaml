@@ -1,6 +1,6 @@
 dataset: ehrsql
-db_id: mimic3
-test_data_path : dataset/ehrsql/mimic3/valid.json
+db_id: mimic_iii
+test_data_path: dataset/ehrsql/mimic_iii/valid.json
 use_para: true
 exp_name : eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid
 

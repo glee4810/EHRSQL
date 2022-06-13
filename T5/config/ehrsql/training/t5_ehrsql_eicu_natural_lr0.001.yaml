@@ -15,5 +15,5 @@ tables_path:
 add_schema: false
 add_column_type: false
 
-use_wandb: true
-wandb_project: ehr-semantic-parsing
+# use_wandb: true
+# wandb_project: ehr-semantic-parsing
