@@ -16,6 +16,9 @@ conda create -n ehrsql python=3.7
 conda activate ehrsql
 pip install pandas
 pip install dask
+pip install scikit-learn
+pip install nltk
+pip install func-timeout
 ```
 
 
@@ -214,9 +217,9 @@ python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_eicu_natural_lr0.001_
 
 To evaluate the generated SQL queries, run the code below.
 ```
-python get_execution_performance.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid/eval.log 
-python get_execution_performance.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid/eval.log 
-python get_execution_performance.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid/eval.log 
-python get_execution_performance.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid/eval.log
+python evaluation.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid/eval.log 
+python evaluation.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid/eval.log 
+python evaluation.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid/eval.log 
+python evaluation.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid/eval.log
 ```
 

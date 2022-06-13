@@ -1,0 +1,14 @@
+dataset: ehrsql
+db_id: mimic3
+test_data_path : dataset/ehrsql/mimic3/valid.json
+use_para: true
+exp_name : eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid
+
+mode: eval
+load_model_path: outputs/t5_ehrsql_mimic3_natural_lr0.001/checkpoint_best.pth.tar
+eval_batch_size: 8
+current_time: "2105-12-31 23:59:00"
+
+tables_path: 
+add_schema: false
+add_column_type: false

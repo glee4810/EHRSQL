@@ -1,0 +1,19 @@
+dataset: ehrsql
+db_id: mimic3
+train_data_path : dataset/ehrsql/mimic3/train.json
+valid_data_path : dataset/ehrsql/mimic3/valid.json
+
+exp_name : t5_ehrsql_mimic3_natural_lr0.001
+use_para: true
+mode: train
+load_model_path: 
+train_batch_size: 4
+eval_batch_size: 8
+lr: 0.001
+
+tables_path: 
+add_schema: false
+add_column_type: false
+
+use_wandb: true
+wandb_project: ehr-semantic-parsing
