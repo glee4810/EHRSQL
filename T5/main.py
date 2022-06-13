@@ -12,12 +12,7 @@ from utils.dataset import EHRSQL_Dataset, DataCollator
 from utils.logger import init_logger
 from config import Config
 
-from wandb_api_key import WANDB_API_KEY
 from T5.model import load_model, load_tokenizer
-
-# https://github.com/facebookresearch/FiD/tree/25ed1ff0fe0288b80fb5e9e5de8d6346b94b8d48
-# https://github.com/wenhuchen/Time-Sensitive-QA
-# https://github.com/joeljang/continual-knowledge-learning
 
 
 if __name__ == '__main__':
@@ -41,16 +36,17 @@ if __name__ == '__main__':
         print('Current device: cpu')
     set_seeds(args.random_seed)
     
-    # output_path = os.path.join(args.output_dir, args.exp_name)
-    # if os.path.exists(output_path):
-    #     raise Exception(f"directory already exists ({output_path})")
-    # logger = init_logger(output_path, args)
-    # logger.info(args)
+    output_path = os.path.join(args.output_dir, args.exp_name)
+    if os.path.exists(output_path):
+        raise Exception(f"directory already exists ({output_path})")
+    logger = init_logger(output_path, args)
+    logger.info(args)
 
-    # if args.use_wandb:
-    #     import wandb
-    #     os.environ["WANDB_API_KEY"] = WANDB_API_KEY
-    #     wandb.init(project=args.wandb_project, name=args.exp_name)
+    if args.use_wandb:
+        import wandb
+        from wandb_api_key import WANDB_API_KEY
+        os.environ["WANDB_API_KEY"] = WANDB_API_KEY
+        wandb.init(project=args.wandb_project, name=args.exp_name)
 
 
     tokenizer = load_tokenizer(args.model_name)

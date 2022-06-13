@@ -26,4 +26,3 @@ def post_process_sql(query,
     query = query.replace("%y", "%Y").replace('%j', '%J')
     return query
 
-    
