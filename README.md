@@ -16,6 +16,7 @@ conda create -n ehrsql python=3.7
 conda activate ehrsql
 pip install pandas
 pip install dask
+pip install wandb # if needed
 pip install nltk
 pip install scikit-learn
 pip install func-timeout
