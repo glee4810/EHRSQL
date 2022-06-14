@@ -74,7 +74,7 @@ class Build_MIMIC_III(Sampler):
         ADMISSIONS_table = read_csv(self.data_dir, 'ADMISSIONS.csv', columns=['ROW_ID', 'SUBJECT_ID', 'HADM_ID', 'ADMITTIME', 
                                                                               'DISCHTIME', 'ADMISSION_TYPE', 
                                                                               'ADMISSION_LOCATION', 'DISCHARGE_LOCATION', 'INSURANCE', 
-                                                                              'MARITAL_STATUS', 'ETHNICITY'], lower=True)
+                                                                              'LANGUAGE', 'MARITAL_STATUS', 'ETHNICITY'], lower=True)
         ADMISSIONS_table['AGE'] = [int((datetime.strptime(admtime, '%Y-%m-%d %H:%M:%S') - datetime.strptime(subjectid2dob[pid], '%Y-%m-%d %H:%M:%S')).days/365.25) for pid, admtime in zip(ADMISSIONS_table['SUBJECT_ID'].values, ADMISSIONS_table['ADMITTIME'].values)]
 
         # remove age outliers
@@ -466,10 +466,11 @@ class Build_MIMIC_III(Sampler):
         INPUTEVENTS_table = read_csv(self.data_dir, 'INPUTEVENTS_CV.csv', columns=['ROW_ID', 'SUBJECT_ID', 'HADM_ID', 'ICUSTAY_ID', 'CHARTTIME', 'ITEMID', 'AMOUNT', 'AMOUNTUOM'], lower=True)
         INPUTEVENTS_table = INPUTEVENTS_table.dropna(subset=['HADM_ID', 'ICUSTAY_ID', 'AMOUNT', 'AMOUNTUOM'])
         INPUTEVENTS_table = INPUTEVENTS_table[INPUTEVENTS_table['AMOUNTUOM']=='ml']
+        del INPUTEVENTS_table['AMOUNTUOM']
 
         INPUTEVENTS_table = INPUTEVENTS_table[INPUTEVENTS_table['ITEMID'].isin(self.D_ITEMS_dict)]
         if self.deid:
-            INPUTEVENTS_table = self.condition_value_shuffler(INPUTEVENTS_table, target_cols=['ITEMID', 'AMOUNT', 'AMOUNTUOM'])
+            INPUTEVENTS_table = self.condition_value_shuffler(INPUTEVENTS_table, target_cols=['ITEMID', 'AMOUNT'])
         INPUTEVENTS_table = INPUTEVENTS_table[INPUTEVENTS_table['HADM_ID'].isin(self.hadm_list)]
 
         if self.timeshift:
@@ -493,10 +494,11 @@ class Build_MIMIC_III(Sampler):
         OUTPUTEVENTS_table = read_csv(self.data_dir, 'OUTPUTEVENTS.csv', columns=['ROW_ID', 'SUBJECT_ID', 'HADM_ID', 'ICUSTAY_ID', 'CHARTTIME', 'ITEMID', 'VALUE', 'VALUEUOM'], lower=True)
         OUTPUTEVENTS_table = OUTPUTEVENTS_table.dropna(subset=['HADM_ID', 'ICUSTAY_ID', 'VALUE', 'VALUEUOM'])
         OUTPUTEVENTS_table = OUTPUTEVENTS_table[OUTPUTEVENTS_table['VALUEUOM']=='ml']
+        del OUTPUTEVENTS_table['VALUEUOM']
 
         OUTPUTEVENTS_table = OUTPUTEVENTS_table[OUTPUTEVENTS_table['ITEMID'].isin(self.D_ITEMS_dict)]
         if self.deid:
-            OUTPUTEVENTS_table = self.condition_value_shuffler(OUTPUTEVENTS_table, target_cols=['ITEMID', 'VALUE', 'VALUEUOM'])
+            OUTPUTEVENTS_table = self.condition_value_shuffler(OUTPUTEVENTS_table, target_cols=['ITEMID', 'VALUE'])
         OUTPUTEVENTS_table = OUTPUTEVENTS_table[OUTPUTEVENTS_table['HADM_ID'].isin(self.hadm_list)]
 
         if self.timeshift:

@@ -16,8 +16,8 @@ conda create -n ehrsql python=3.7
 conda activate ehrsql
 pip install pandas
 pip install dask
-pip install scikit-learn
 pip install nltk
+pip install scikit-learn
 pip install func-timeout
 ```
 
@@ -71,7 +71,7 @@ Each database in `train.json` and `valid.json` contains the following fields:
 
 #### Tables
 
-We follow the similar style of table information introduced in [Spider](https://github.com/taoyds/spider). `tables.json` contains the following information for each database:
+We follow the same style of table information introduced in [Spider](https://github.com/taoyds/spider). `tables.json` contains the following information for each database:
 
 - `db_id`: database id
 - `table_names_original`: original table names stored in the database.
