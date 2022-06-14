@@ -30,7 +30,7 @@ pip install func-timeout
 
 #### Question and SQL
 
-Each database in `train.json` contains the following fields:
+For each database, `train.json` contains the following fields:
 - `db_id`: the database id to which this question is addressed.
 - `question`: the paraphrased question 
 - `template`: the template question 
@@ -67,7 +67,7 @@ Each database in `train.json` contains the following fields:
 }
 ```
 
-In `valid.json`, answerable instances are structured in the same manner as `train.json`. But unanswerable instances have a smaller number of fields.
+For `valid.json`, answerable instances are structured in the same manner as `train.json`. But unanswerable instances have a smaller number of fields.
 ```
  {
     "db_id": "mimic_iii",
