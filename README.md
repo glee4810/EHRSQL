@@ -30,7 +30,7 @@ pip install func-timeout
 
 #### Question and SQL
 
-Each database in `train.json` and `valid.json` contains the following fields:
+Each database in `train.json` contains the following fields:
 - `db_id`: the database id to which this question is addressed.
 - `question`: the paraphrased question 
 - `template`: the template question 
@@ -47,10 +47,9 @@ Each database in `train.json` and `valid.json` contains the following fields:
 - `split`: data split (train, valid, test)
 - `id`: unique id of each data instance
 
-
 ```
  {
-    "db_id": "mimic3",
+    "db_id": "mimic_iii",
     'question': 'tell me the method of intake of clobetasol propionate 0.05% ointment?',
     'template': 'what is the intake method of clobetasol propionate 0.05% ointment?',
     'query': "select distinct prescriptions.route from prescriptions where prescriptions.drug = 'clobetasol propionate 0.05% ointment'",
@@ -66,8 +65,24 @@ Each database in `train.json` and `valid.json` contains the following fields:
     'split': 'train',
     'id': '294c4222b4ad35fbe4fb9801'
 }
-
 ```
+
+In `valid.json`, answerable instances are structured in the same manner as `train.json`. But unanswerable instances have a smaller number of fields.
+```
+ {
+    "db_id": "mimic_iii",
+    'question': 'tell me what medicine to use to relieve a headache in hypertensive patients.',
+    'query': "nan",
+    'department': "['nursing']",
+    'para_type': 'human',
+    'is_impossible': True,
+    'split': 'valid',
+    'id': '9db3a82be08e143d7976b015'
+}
+```
+
+
+
 
 #### Tables
 
