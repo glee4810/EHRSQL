@@ -77,9 +77,9 @@ if __name__ == '__main__':
 
 
     if args.mode=='eval':
-        from evaluate import generate
+        from generate import generate_sql
         print("start inference")
-        generate(model=model, eval_dataset=test_dataset, args=args, collator=data_collator, logger=logger, verbose=1)
+        generate_sql(model=model, eval_dataset=test_dataset, args=args, collator=data_collator, logger=logger, verbose=1)
     else:
         from trainer_t5 import train
         print("start training")
