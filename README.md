@@ -243,4 +243,4 @@ python evaluation.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_
 
 ### Have Questions?
 
-Ask us questions at our Github issues page or contact gyubokl@kaist.ac.kr
+Ask us questions at our Github issues page or contact gyubokl@kaist.ac.kr.
