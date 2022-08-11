@@ -1,6 +1,9 @@
 # EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records
 
-EHRSQL is a large text-to-SQL dataset for Electronic Health Records (EHRs), where the questions are collected from 222 hospital staff—including physicians, nurses, insurance review and health records teams, etc. The questions are linked to two open-source EHR database schemas: [Medical Information Mart for Intensive Care III (MIMIC III)](https://physionet.org/content/mimiciii/1.4/) and [eICU Collaborative Research Database (eICU)](https://physionet.org/content/eicu-crd/2.0/). It is released along with our paper: [EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records](https://openreview.net/forum?id=B2W8Vy0rarw). This repo contains code for preprocessing, evaluation, and baselines used in the paper.
+This repository contains 
+EHRSQL is a large-scale text-to-SQL dataset for Electronic Health Records (EHRs), where the questions are collected from 222 hospital staff—including physicians, nurses, insurance review and health records teams, etc. The questions are linked to two open-source EHR database schemas: [Medical Information Mart for Intensive Care III (MIMIC III)](https://physionet.org/content/mimiciii/1.4/) and [eICU Collaborative Research Database (eICU)](https://physionet.org/content/eicu-crd/2.0/). 
+
+The dataset is released along with our paper: [EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records](https://openreview.net/forum?id=B2W8Vy0rarw). For more information, please refer to our paper.
 
 
 ##  Requirments and Installation
