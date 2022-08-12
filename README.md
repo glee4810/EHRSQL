@@ -241,7 +241,8 @@ python evaluation.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_
 python evaluation.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid/eval.log
 ```
 
-### Have Questions?
+
+## Have Questions?
 
 Ask us questions at our Github issues page or contact gyubok.lee@kaist.ac.kr.
 
