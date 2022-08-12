@@ -247,7 +247,7 @@ Ask us questions at our Github issues page or contact gyubok.lee@kaist.ac.kr.
 
 
 
-### License
+## License
 
 
 This work is licensed under a
