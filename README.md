@@ -246,7 +246,9 @@ python evaluation.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_
 Ask us questions at our Github issues page or contact gyubok.lee@kaist.ac.kr.
 
 
-Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
+
+### License
+
 
 This work is licensed under a
 [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License][cc-by-nc-sa].
