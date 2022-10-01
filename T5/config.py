@@ -25,7 +25,7 @@ class Config():
         self.parser.add_argument('--db_id', type=str, help='db_id', choices=['mimic3', 'eicu', 'all'])
         self.parser.add_argument('--train_data_path', type=str, help='train data path')
         self.parser.add_argument('--valid_data_path', type=str, help='eval data path')
-        self.parser.add_argument('--output_dir', type=str, default='outputs', help='output directory')        
+        self.parser.add_argument('--output_dir', type=str, default='outputs', help='output directory')
         self.parser.add_argument('--model_name', type=str, default='t5-base')
         self.parser.add_argument('--enable_copy_mechanism', type=bool, default=False) # TODO
         self.parser.add_argument('--db_path', type=str, default=None)
@@ -37,7 +37,7 @@ class Config():
 
     def initialize_parser(self):
         # basic parameters
-        self.parser.add_argument('--exp_name', type=str, default='none', help='name of the experiment')
+        self.parser.add_argument('--exp_name', type=str, default=None, help='name of the experiment')
         self.parser.add_argument('--load_model_path', type=str, default=None, help='path for retraining')
         self.parser.add_argument("--device", type=str, default='cuda')
         self.parser.add_argument("--num_workers", type=int, default=50)
@@ -57,7 +57,7 @@ class Config():
         self.parser.add_argument('--wandb_project', type=bool, default=None)
 
     def add_eval_param(self):
-        self.parser.add_argument('--eval_batch_size', type=int, default=8)
+        self.parser.add_argument('--eval_batch_size', type=int, default=6)
         self.parser.add_argument('--num_beams', type=int, default=5)
         self.parser.add_argument('--max_length', type=int, default=512)
         self.parser.add_argument('--repetition_penalty', type=float, default=1.0)

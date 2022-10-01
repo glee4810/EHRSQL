@@ -10,6 +10,8 @@ load_model_path:
 train_batch_size: 4
 eval_batch_size: 8
 lr: 0.001
+accumulation_steps: 8
+total_step: 100000
 
 tables_path: 
 add_schema: false

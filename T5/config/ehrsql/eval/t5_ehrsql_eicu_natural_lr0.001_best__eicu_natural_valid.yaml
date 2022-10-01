@@ -1,6 +1,6 @@
 dataset: ehrsql
 db_id: eicu
-test_data_path : dataset/ehrsql/eicu/valid.json
+test_data_path: dataset/ehrsql/eicu/valid.json
 use_para: true
 exp_name : eval_t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid
 

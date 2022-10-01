@@ -26,10 +26,11 @@ if __name__ == '__main__':
     with open(args.config, 'r') as f:
         config = yaml.load(f, yaml.SafeLoader)
     for k, v in config.items():
-        setattr(args, k, config.get(k))
+        if config[k]:
+            setattr(args, k, config.get(k))
 
     os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID"
-    os.environ["CUDA_VISIBLE_DEVICES"]=args.CUDA_VISIBLE_DEVICES
+    os.environ["CUDA_VISIBLE_DEVICES"]=args.CUDA_VISIBLE_DEVICES if args.device == 'cuda' else ""
     if torch.cuda.is_available():
         print(f'Current device: cuda:{args.CUDA_VISIBLE_DEVICES}')
     else:
@@ -39,8 +40,11 @@ if __name__ == '__main__':
     output_path = os.path.join(args.output_dir, args.exp_name)
     if os.path.exists(output_path):
         raise Exception(f"directory already exists ({output_path})")
-    logger = init_logger(output_path, args)
-    logger.info(args)
+
+    logger = None
+    if args.mode=='train':
+        logger = init_logger(output_path, args)
+        logger.info(args)
 
     if args.use_wandb:
         import wandb
@@ -55,11 +59,12 @@ if __name__ == '__main__':
     if args.mode=='train':
         train_dataset = EHRSQL_Dataset(path=args.train_data_path, tokenizer=tokenizer, args=args)
         valid_dataset = EHRSQL_Dataset(path=args.valid_data_path, tokenizer=tokenizer, args=args)
-        logger.info(f"loaded {len(train_dataset)} training examples from {args.train_data_path}")
-        logger.info(f"loaded {len(valid_dataset)} valid examples from {args.valid_data_path}")
+        if logger:
+            logger.info(f"loaded {len(train_dataset)} training examples from {args.train_data_path}")
+            logger.info(f"loaded {len(valid_dataset)} valid examples from {args.valid_data_path}")
     elif args.mode=='eval':
         test_dataset = EHRSQL_Dataset(path=args.test_data_path, tokenizer=tokenizer, args=args, include_impossible=True)
-        logger.info(f"loaded {len(test_dataset)} test examples from {args.test_data_path}")
+        print(f"loaded {len(test_dataset)} test examples from {args.test_data_path}")
         
 
     model = load_model(model_name=args.model_name)
@@ -71,15 +76,21 @@ if __name__ == '__main__':
         step, best_metric = 0, np.inf
     else:
         model, optimizer, scheduler, args, step, best_metric = load(model, args.load_model_path, args)
-        logger.info("loading checkpoint %s" %args.load_model_path)
+        if logger:
+            logger.info("loading checkpoint %s" %args.load_model_path)
+        else:
+            print("loading checkpoint %s" %args.load_model_path)
     if torch.cuda.device_count() > 1:
         model = torch.nn.DataParallel(model)
 
-
     if args.mode=='eval':
+        import json
         from generate import generate_sql
         print("start inference")
-        generate_sql(model=model, eval_dataset=test_dataset, args=args, collator=data_collator, logger=logger, verbose=1)
+        out_eval = generate_sql(model=model, eval_dataset=test_dataset, args=args, collator=data_collator, verbose=1)
+        os.makedirs(output_path, exist_ok=True)
+        with open(os.path.join(output_path, 'prediction.json'), 'w') as f:
+            json.dump(out_eval, f)
     else:
         from trainer_t5 import train
         print("start training")
@@ -96,3 +107,6 @@ if __name__ == '__main__':
             checkpoint_path=output_path,
             logger=logger
         )
+
+# python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid.yaml --device cpu --eval_batch_size 1
+# python evaluation_v2.py --infernece_result_path /home/gblee/EHRSQL/outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid__debug/prediction.json --db_path /home/gblee/EHRSQL/dataset/ehrsql/mimic_iii/mimic_iii.db

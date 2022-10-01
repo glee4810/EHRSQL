@@ -12,12 +12,8 @@ class AnnotatedSQL:
     question: str
     query: str
     db_id: Optional[str] = None
-    q_tag: Optional[str] = None
-    t_tag: Optional[str] = None
-    o_tag: Optional[str] = None
-    para_type: Optional[str] = None
-    imp: Optional[str] = None
     is_impossible: Optional[str] = None
+    id: Optional[str] = None
 
 
 class EHRSQL_Dataset(Dataset):
@@ -61,27 +57,13 @@ class EHRSQL_Dataset(Dataset):
         for line in tqdm(data):
             if self.include_impossible==False and 'is_impossible' in line and line['is_impossible']:
                 continue
-            if self.dataset == "ehrsql":
-                annotated_sql: AnnotatedSQL = AnnotatedSQL(
-                    question=line[question_key].lower() if question_key in line else line['question'],
-                    query=line[query_key].lower() if query_key in line else 'nan',
-                    db_id=line["db_id"] if "db_id" in line else None,
-                    q_tag=line["q_tag"] if "q_tag" in line else None,
-                    t_tag=line["t_tag"] if "t_tag" in line else None,
-                    o_tag=line["o_tag"] if "o_tag" in line else None,
-                    para_type=line["para_type"] if "para_type" in line else None,
-                    imp=line["importance"] if "importance" in line else None,
-                    is_impossible=line["is_impossible"] if "is_impossible" in line else None,
-                )
-            elif args.dataset == 'mimicsql' or args.dataset == 'mimicsqlstar':
-                annotated_sql: AnnotatedSQL = AnnotatedSQL(                
-                    question=line[question_key].lower(),
-                    query=line[query_key].lower(),
-                    db_id=args.dataset,
-                )
-            else:
-                raise NotImplementedError
-
+            annotated_sql: AnnotatedSQL = AnnotatedSQL(
+                question=line[question_key].lower() if question_key in line else line['question'],
+                query=line[query_key].lower() if query_key in line else 'null',
+                db_id=line["db_id"],
+                is_impossible=line["is_impossible"],
+                id=line["id"]
+            )
             instance = self.preprocess_sample(annotated_sql)
             self.data.append(instance)
 
@@ -98,12 +80,8 @@ class EHRSQL_Dataset(Dataset):
             question=question,
             query=annotated_sql.query,
             db_id=annotated_sql.db_id,
-            q_tag=annotated_sql.q_tag,
-            t_tag=annotated_sql.t_tag,
-            o_tag=annotated_sql.o_tag,
-            para_type=annotated_sql.para_type,
-            imp=annotated_sql.imp,
-            is_impossible=annotated_sql.is_impossible
+            is_impossible=annotated_sql.is_impossible,
+            id=annotated_sql.id
         )
 
         return processed_annotated_sql
@@ -154,12 +132,8 @@ class EHRSQL_Dataset(Dataset):
             "inputs": self.data[index].question,
             "labels": self.data[index].query,
             "db_id": self.data[index].db_id,
-            "q_tag": self.data[index].q_tag,
-            "t_tag": self.data[index].t_tag,
-            "o_tag": self.data[index].o_tag,
-            "para_type": self.data[index].para_type,
-            "imp": self.data[index].imp,
-            "is_impossible": self.data[index].is_impossible
+            "is_impossible": self.data[index].is_impossible,
+            "id": self.data[index].id,
         }
         return fields
 
@@ -178,24 +152,16 @@ class DataCollator(object):
     def __call__(self, batch):
 
         input_ids, labels = [], []
+        data_ids = []
         db_id = []
-        q_tags = []
-        t_tags = []
-        o_tags = []
-        para_types = []
-        imps = []
         is_impossibles = []
         for instance in batch:
             input_ids.append(instance['inputs'])
             labels.append(instance['labels'])
             db_id.append(instance['db_id'])
-            q_tags.append(instance['q_tag'])
-            t_tags.append(instance['t_tag'])
-            o_tags.append(instance['o_tag'])
-            para_types.append(instance['para_type'])
-            imps.append(instance['imp'])
             is_impossibles.append(instance['is_impossible'])
-
+            data_ids.append(instance['id'])
+            
         inputs = self.tokenizer(input_ids, return_tensors=self.return_tensors, padding=self.padding, truncation=self.truncation)
         outputs = self.tokenizer(labels, return_tensors=self.return_tensors, padding=self.padding, truncation=self.truncation)
 
@@ -203,12 +169,8 @@ class DataCollator(object):
             "inputs": inputs.input_ids,
             "labels": outputs.input_ids,
             "db_id": db_id,
-            "q_tag": q_tags,
-            "t_tag": t_tags,
-            "o_tag": o_tags,
-            "para_type": para_types,
-            "imp": imps,            
-            "is_impossible": is_impossibles
+            "is_impossible": is_impossibles,
+            "id": data_ids
         }
 
         return fields

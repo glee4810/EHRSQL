@@ -1,7 +1,8 @@
 # EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records
 
-EHRSQL is a large text-to-SQL dataset for Electronic Health Records (EHRs), where the questions are collected from 222 hospital staff—including physicians, nurses, insurance review and health records teams, etc. The questions are linked to two open-source EHR database schemas: [Medical Information Mart for Intensive Care III (MIMIC III)](https://physionet.org/content/mimiciii/1.4/) and [eICU Collaborative Research Database (eICU)](https://physionet.org/content/eicu-crd/2.0/). More details are provided below.
+EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering (QA) on Electronic Health Records ([MIMIC-III](https://physionet.org/content/mimiciii/1.4/) and [eICU](https://physionet.org/content/eicu-crd/2.0/)). The questions are collected from 222 hospital staff, including physicians, nurses, insurance review and health records teams, etc. The dataset can be used to test three aspects of QA models: generating a wide range of SQL queries asked in the hospital workplace, understanding various types of time expressions (absolute, relative, or both), and the capability to abstain from answering (querying the database) when the model prediction is not confident (trustworthy Text-to-SQL task).
 
+The dataset is released along with our paper: [EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records](https://openreview.net/forum?id=B2W8Vy0rarw) (NeurIPS 2022 Datasets and Benchmarks). For more information, please refer to our paper.
 
 
 ##  Requirments and Installation
@@ -48,37 +49,37 @@ For each database, `train.json` contains the following fields:
 - `split`: data split (train, valid, test)
 - `id`: unique id of each data instance
 
-```
+```json
  {
     "db_id": "mimic_iii",
-    'question': 'tell me the method of intake of clobetasol propionate 0.05% ointment?',
-    'template': 'what is the intake method of clobetasol propionate 0.05% ointment?',
-    'query': "select distinct prescriptions.route from prescriptions where prescriptions.drug = 'clobetasol propionate 0.05% ointment'",
-    'value': {'drug_name': 'clobetasol propionate 0.05% ointment'},
-    'q_tag': 'what is the intake method of {drug_name}?',
-    't_tag': ('', '', '', '', ''),
-    'o_tag': ('', '', '', '', '', '', '', '', ''),
-    'tag': 'what is the intake method of {drug_name}?',
-    'department': "['nursing']",
-    'importance': 'medium',
-    'para_type': 'machine',
-    'is_impossible': False,
-    'split': 'train',
-    'id': '294c4222b4ad35fbe4fb9801'
+    "question": "tell me the method of intake of clobetasol propionate 0.05% ointment?",
+    "template": "what is the intake method of clobetasol propionate 0.05% ointment?",
+    "query": "select distinct prescriptions.route from prescriptions where prescriptions.drug = 'clobetasol propionate 0.05% ointment'",
+    "value": {"drug_name": "clobetasol propionate 0.05% ointment"},
+    "q_tag": "what is the intake method of {drug_name}?",
+    "t_tag": "["", "", "", "", ""]",
+    "o_tag": "["", "", "", "", "", "", "", "", ""]",
+    "tag": "what is the intake method of {drug_name}?",
+    "department": "['nursing']",
+    "importance": "medium",
+    "para_type": "machine",
+    "is_impossible": false,
+    "split": "train",
+    "id": "294c4222b4ad35fbe4fb9801"
 }
 ```
 
 For `valid.json`, answerable instances are structured in the same manner as `train.json`. But unanswerable instances have a smaller number of fields.
-```
+```json
  {
     "db_id": "mimic_iii",
-    'question': 'tell me what medicine to use to relieve a headache in hypertensive patients.',
-    'query': "nan",
-    'department': "['nursing']",
-    'para_type': 'human',
-    'is_impossible': True,
-    'split': 'valid',
-    'id': '9db3a82be08e143d7976b015'
+    "question": "tell me what medicine to use to relieve a headache in hypertensive patients.",
+    "query": "nan",
+    "department": "['nursing']",
+    "para_type": "human",
+    "is_impossible": true,
+    "split": "valid",
+    "id": "9db3a82be08e143d7976b015"
 }
 ```
 
@@ -99,7 +100,7 @@ We follow the same style of table information introduced in [Spider](https://git
 - `primary_keys`: primary keys in the database. Each number is the index of `column_names`.
 
 
-```
+```json
 {
     "column_names": [
       [
@@ -118,9 +119,7 @@ We follow the same style of table information introduced in [Spider](https://git
         0,
         "dob"
       ],
-      .
-      .
-      .
+      ...
     ],
     "column_names_original": [
       [
@@ -139,18 +138,14 @@ We follow the same style of table information introduced in [Spider](https://git
         0,
         "DOB"
       ],
-      .
-      .
-      .
+      ...
     ],
     "column_types": [
       "number",
       "number",
       "text",
       "time",
-         .
-         .
-         .
+      ...
     ],
     "db_id": "mimic_iii",
     "foreign_keys": [
@@ -158,30 +153,22 @@ We follow the same style of table information introduced in [Spider](https://git
         7,
         2
       ],
-      .
-      .
-      .
+      ...
     ],
     "primary_keys": [
       1,
       5,
-      .
-      .
-      .      
+      ...
     ],
     "table_names": [
       "patients",
       "admissions",
-          .
-          .
-          .      
+      ...
     ],
     "table_names_original": [
       "PATIENTS",
       "ADMISSIONS",
-          .
-          .
-          .
+      ...
     ]
   }
 ```
@@ -211,31 +198,34 @@ If the databases are not available, no execution accuracy (EX) is measured, but 
 
 To train T5-base models, run the code below.
 ```
-python T5/main.py --config T5/config/ehrsql/training/t5_ehrsql_eicu_natural_lr0.001.yaml --CUDA_VISIBLE_DEVICES <gpu_id> 
-python T5/main.py --config T5/config/ehrsql/training/t5_ehrsql_eicu_natural_lr0.001_schema.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
 python T5/main.py --config T5/config/ehrsql/training/t5_ehrsql_mimic3_natural_lr0.001.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
 python T5/main.py --config T5/config/ehrsql/training/t5_ehrsql_mimic3_natural_lr0.001_schema.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
+python T5/main.py --config T5/config/ehrsql/training/t5_ehrsql_eicu_natural_lr0.001.yaml --CUDA_VISIBLE_DEVICES <gpu_id> 
+python T5/main.py --config T5/config/ehrsql/training/t5_ehrsql_eicu_natural_lr0.001_schema.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
 ```
 
-### Inference
+### SQL Generation
 
 To generate SQL queries, run the code below.
 ```
-python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_best__eicu_natural_valid.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
-python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_schema_best__eicu_natural_valid.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
+python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
+python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
 python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
 python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
 ```
-
 
 
 ### Evaluation
 
 To evaluate the generated SQL queries, run the code below.
 ```
-python evaluation.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid/eval.log 
-python evaluation.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid/eval.log 
-python evaluation.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid/eval.log 
-python evaluation.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid/eval.log
+python evaluation.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid/prediction.json 
+python evaluation.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid/prediction.json 
+python evaluation.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid/prediction.json 
+python evaluation.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid/prediction.json 
 ```
 
+
+## Have Questions?
+
+Ask us questions at our Github issues page or contact gyubok.lee@kaist.ac.kr.

@@ -11,10 +11,10 @@ import torch
 from torch.utils.data import DataLoader, SequentialSampler
 
 
-def generate_sql(model, eval_dataset, args, collator, logger, verbose=0):
+def generate_sql(model, eval_dataset, args, collator, verbose=0):
 
     if not hasattr(args, 'current_time'):
-        Exception(f'current_time must be specified!')
+        Exception(f'Current_time must be specified to handle relative time expressions!')
 
     file_name = args.config.split('/')[-1]
     start_time = time.time()
@@ -33,18 +33,16 @@ def generate_sql(model, eval_dataset, args, collator, logger, verbose=0):
 
     do_sample = True if args.num_beams == 1 else False
     with torch.no_grad():
+
+        out_eval = {}
         for idx, batch in enumerate(dataloader, 1):
 
             input_ids = batch['inputs'].to(args.device)
             labels = batch['labels'].to(args.device)
             db_ids = batch['db_id']
-            q_tags = batch['q_tag']
-            t_tags = batch['t_tag']
-            o_tags = batch['o_tag']
-            para_types = batch['para_type']
-            imps = batch['imp']
             is_impossibles = batch['is_impossible']
-
+            data_ids = batch['id']
+            
             generation_output = model.generate(
                                     input_ids=input_ids, 
                                     num_beams=args.num_beams,
@@ -80,26 +78,20 @@ def generate_sql(model, eval_dataset, args, collator, logger, verbose=0):
                 if tokenizer.eos_token_id in pred_tensor:
                     pred_eos_idx = torch.nonzero(pred_tensor==tokenizer.eos_token_id)[0].item()
                     entropy = entropy[:pred_eos_idx+1]
-
-                log = {}
-                log['db_id'] = db_ids[i]
-                log['question'] = text
-                log['real'] = real_executable
-                log['pred'] = pred_executable
-                log['is_impossible'] = is_impossibles[i]
-                log['sequence_entropy'] = tuple(entropy)
-                log['para_type'] = para_types[i]
-                if log['is_impossible']==False:                    
-                    log['q_tag'] = q_tags[i]
-                    log['t_tag'] = tuple(t_tags[i])
-                    log['o_tag'] = tuple(o_tags[i])                    
-                    log['imp'] = imps[i]
-                logger.info(log)
+                result = {}
+                result['question'] = text
+                result['real'] = real_executable
+                result['pred'] = pred_executable
+                result['db_id'] = db_ids[i]
+                result['is_impossible'] = is_impossibles[i]
+                result['sequence_entropy'] = tuple(entropy)
+                out_eval[data_ids[i]] = result
 
             if verbose>0:
                 print(f'{idx}/{len(dataloader)} ({round(idx/len(dataloader)*100, 4)}%) --- {file_name}', end='\r')
 
-    end_log = f"inference took {round(time.time() - start_time, 6)} secs"
-    logger.info(end_log)
+    if verbose>0:
+        print(f"inference took {round(time.time() - start_time, 6)} secs")
 
+    return out_eval
 
