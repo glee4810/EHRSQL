@@ -1,11 +1,5 @@
-'''Official evaluation script for EHRSQL
+'''Official evaluation script for EHRSQL'''
 
-Description
-The goal of the model is to return as many correct answers to the answerable questions as possible while disregarding unanswerable questions.
-- Precision measures how well the model generates SQL queries while it abstains from answering unanswerable questions.
-- Recall measures how comprehensive the model can handle different question templates.
-- F1 is a combination of precision and recall.
-'''
 import os
 import sys
 import json
