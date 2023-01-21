@@ -16,9 +16,10 @@ def parse_args():
     args.add_argument('--infernece_result_path', required=True, type=str, help='path for inference')
     args.add_argument('--db_path', required=True, type=str, help='path database')    
     args.add_argument("--num_workers", type=int, default=-1)
-    args.add_argument("--timeout", type=int, default=5.0, help='execution time limit in sec')
+    args.add_argument("--timeout", type=int, default=60.0, help='execution time limit in sec')
     args.add_argument("--threshold", type=float, default=-1, help='entropy threshold to abstrain from answering')
     args.add_argument("--out_file", type=str, default=None, help='path to save the output file')
+    args.add_argument("--ndigits", type=int, default=2, help='scores rounded to ndigits')
     return args.parse_args()
 
 
@@ -135,12 +136,12 @@ def main(args):
     f1_exec = 2*((precision_exec*recall_exec)/(precision_exec+recall_exec+1e-10))
 
     out_eval = OrderedDict([
-        ('precision_ans', 100.0 * precision_ans),
-        ('recall_ans', 100.0 * recall_ans),
-        ('f1_ans', 100.0 * f1_ans),
-        ('precision_exec', 100.0 * precision_exec),
-        ('recall_exec', 100.0 * recall_exec),
-        ('f1_exec', 100.0 * f1_exec),
+        ('precision_ans', round(100.0 * precision_ans, args.ndigits)),
+        ('recall_ans', round(100.0 * recall_ans, args.ndigits)),
+        ('f1_ans', round(100.0 * f1_ans, args.ndigits)),
+        ('precision_exec', round(100.0 * precision_exec, args.ndigits)),
+        ('recall_exec', round(100.0 * recall_exec, args.ndigits)),
+        ('f1_exec', round(100.0 * f1_exec, args.ndigits)),
     ])
 
     if args.out_file:
