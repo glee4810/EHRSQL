@@ -2,7 +2,7 @@
 
 EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering (QA) on Electronic Health Records ([MIMIC-III](https://physionet.org/content/mimiciii/1.4/) and [eICU](https://physionet.org/content/eicu-crd/2.0/)). The questions are collected from 222 hospital staff, including physicians, nurses, insurance review and health records teams, etc. The dataset can be used to test three aspects of QA models: generating a wide range of SQL queries asked in the hospital workplace, understanding various types of time expressions (absolute, relative, or both), and the capability to abstain from answering (querying the database) when the model prediction is not confident (trustworthy Text-to-SQL task).
 
-The dataset is released along with our paper: [EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records](https://openreview.net/forum?id=B2W8Vy0rarw) (NeurIPS 2022 Datasets and Benchmarks). For more information, please refer to our paper.
+The dataset is released along with our paper: [EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records](https://arxiv.org/abs/2301.07695) (NeurIPS 2022 Datasets and Benchmarks). For more information, please refer to our paper.
 
 
 ##  Requirments and Installation
@@ -219,10 +219,10 @@ python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_eicu_natural_lr0.001_
 
 To evaluate the generated SQL queries, run the code below.
 ```
-python evaluation.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid/prediction.json 
-python evaluation.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid/prediction.json 
-python evaluation.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid/prediction.json 
-python evaluation.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid/prediction.json 
+python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid/prediction.json 
+python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid/prediction.json 
+python evaluate.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid/prediction.json 
+python evaluate.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid/prediction.json 
 ```
 
 

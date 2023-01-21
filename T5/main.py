@@ -108,5 +108,3 @@ if __name__ == '__main__':
             logger=logger
         )
 
-# python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid.yaml --device cpu --eval_batch_size 1
-# python evaluation_v2.py --infernece_result_path /home/gblee/EHRSQL/outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid__debug/prediction.json --db_path /home/gblee/EHRSQL/dataset/ehrsql/mimic_iii/mimic_iii.db
