@@ -1,0 +1,60 @@
+pre {
+  white-space: pre-wrap;
+  word-break: normal;
+  font-weight: 400;
+  background-color: #fff;
+  line-height: 1.5em;
+  font-size: 1em;
+  border: 2px solid #6e54da;
+  color: #555;
+}
+.qa-wrap {
+  padding: 10px 10px;
+  margin: 5px 0px;
+  cursor: pointer;
+  border: 1px solid #f5f5f5;
+}
+.qa-wrap:hover {
+  background-color: #f5f5f5;
+}
+#title {
+  word-break: break-all;
+}
+.model-title-holder {
+  display: none;
+}
+.para-wrap {
+  padding: 20px 0px;
+}
+.listContainer {
+  border-top: 10px solid #eee;
+}
+.listContainer .infoBody {
+  padding: 10px 20px;
+}
+.qas-wrap {
+  max-height: 500px;
+  overflow: scroll;
+}
+.qas-wrap .correct-qa {
+  border-left: 5px solid #29e21f;
+}
+.qas-wrap .wrong-qa {
+  border-left: 5px solid #e2461f;
+}
+.qas-wrap .partial-qa {
+  border-left: 5px solid #e2c62f;
+}
+.qas-wrap .prediction-holder {
+  display: none;
+}
+.qas-wrap .answer,
+.qas-wrap .prediction {
+  margin-right: 4px;
+  border: 1px solid #ddd;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+.qas-wrap .no-answer {
+  font-family: monospace;
+}

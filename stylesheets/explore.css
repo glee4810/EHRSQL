@@ -1,0 +1,7 @@
+ul.list-inline {
+  margin: auto;
+  text-align: center;
+}
+ul.list-inline li a.actionBtn {
+  margin: 5px auto;
+}
