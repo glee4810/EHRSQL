@@ -68,6 +68,7 @@ if __name__ == '__main__':
         
 
     model = load_model(model_name=args.model_name)
+    model.resize_token_embeddings(len(tokenizer))
     if args.init_weights:
         model.init_weights()
     if args.load_model_path is None:
