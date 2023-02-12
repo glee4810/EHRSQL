@@ -1,9 +1,8 @@
 import os
-import copy
 import json
+import time
 import openai
 import argparse
-from tqdm import tqdm
 import numpy as np
 
 def parse_args():
@@ -27,7 +26,7 @@ def run_engine(prompt):
       stop=["\n"]
     )
     text = response['choices'][0]['text']
-    text = f'select{text}'.split('\n')[0]
+    text = f'select{text}'
     return text
 
 if __name__ == '__main__':
