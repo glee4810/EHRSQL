@@ -26,8 +26,8 @@ class Config():
         self.parser.add_argument('--train_data_path', type=str, help='train data path')
         self.parser.add_argument('--valid_data_path', type=str, help='eval data path')
         self.parser.add_argument('--output_dir', type=str, default='outputs', help='output directory')
+        self.parser.add_argument('--output_file', type=str, default='prediction.json', help='output file name')        
         self.parser.add_argument('--model_name', type=str, default='t5-base')
-        self.parser.add_argument('--enable_copy_mechanism', type=bool, default=False) # TODO
         self.parser.add_argument('--db_path', type=str, default=None)
         self.parser.add_argument('--add_schema', type=bool, default=False)
         self.parser.add_argument('--add_column_type', type=bool, default=False)

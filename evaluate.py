@@ -17,7 +17,6 @@ def parse_args():
     args.add_argument('--db_path', required=True, type=str, help='path database')    
     args.add_argument("--num_workers", type=int, default=-1)
     args.add_argument("--timeout", type=int, default=60.0, help='execution time limit in sec')
-    args.add_argument("--threshold", type=float, default=-1, help='entropy threshold to abstrain from answering')
     args.add_argument("--out_file", type=str, default=None, help='path to save the output file')
     args.add_argument("--ndigits", type=int, default=2, help='scores rounded to ndigits')
     return args.parse_args()
@@ -79,22 +78,13 @@ def main(args):
     data_id = []
     query_real = []
     query_pred = []
-    entropy = []
     impossible = []
     cnt = 0
     for idx_, line in data.items():
         data_id.append(idx_)
         query_real.append(line['real'])
         query_pred.append(line['pred'])
-        entropy.append(max(line['sequence_entropy']))
         impossible.append(line['is_impossible'])
-
-    if args.threshold == -1:
-        warnings.warn("Threshold value is not set! All predictions are sent to the database.")
-
-    threshold = args.threshold if args.threshold != -1 else np.inf
-    query_real = [label if label!='nan' else 'null' for label in query_real]
-    query_pred = [pred if ent <= threshold else 'null' for pred, ent in zip(query_pred, entropy)]
 
     exec_real = []
     exec_pred = []
@@ -118,7 +108,7 @@ def main(args):
     precision_ans_list = []
     precision_exec_list = []
     recall_ans_list = []
-    recall_exec_list = []   
+    recall_exec_list = []
     for idx in range(len(exec_real)):
         ans_real, ans_pred = exec_real[idx], exec_pred[idx]
         if ans_pred!='null': # calculate the score over predicted answerable queries
@@ -153,7 +143,3 @@ def main(args):
 if __name__ == '__main__':
     args = parse_args()
     main(args)
-
-
-
-

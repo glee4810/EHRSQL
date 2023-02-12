@@ -68,7 +68,6 @@ if __name__ == '__main__':
         
 
     model = load_model(model_name=args.model_name)
-    model.resize_token_embeddings(len(tokenizer))
     if args.init_weights:
         model.init_weights()
     if args.load_model_path is None:
@@ -90,7 +89,7 @@ if __name__ == '__main__':
         print("start inference")
         out_eval = generate_sql(model=model, eval_dataset=test_dataset, args=args, collator=data_collator, verbose=1)
         os.makedirs(output_path, exist_ok=True)
-        with open(os.path.join(output_path, 'prediction.json'), 'w') as f:
+        with open(os.path.join(output_path, args.output_file), 'w') as f:
             json.dump(out_eval, f)
     else:
         from trainer_t5 import train
@@ -108,4 +107,3 @@ if __name__ == '__main__':
             checkpoint_path=output_path,
             logger=logger
         )
-

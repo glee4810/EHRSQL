@@ -194,7 +194,7 @@ If the databases are not available, no execution accuracy (EX) is measured, but 
 
 
 
-### Training
+### T5 Training
 
 To train T5-base models, run the code below.
 ```
@@ -204,25 +204,40 @@ python T5/main.py --config T5/config/ehrsql/training/t5_ehrsql_eicu_natural_lr0.
 python T5/main.py --config T5/config/ehrsql/training/t5_ehrsql_eicu_natural_lr0.001_schema.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
 ```
 
-### SQL Generation
+### T5 SQL Generation with abstention
 
-To generate SQL queries, run the code below.
+To generate SQL queries with T5, run the code below.
 ```
-python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
-python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
-python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
-python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
+python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid.yaml --output_file prediction_raw.json --CUDA_VISIBLE_DEVICES <gpu_id>
+python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid --output_file prediction.json --threshold -1
+python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid.yaml --output_file prediction_raw.json --CUDA_VISIBLE_DEVICES <gpu_id>
+python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid --output_file prediction.json --threshold -1
+python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid.yaml --output_file prediction_raw.json --CUDA_VISIBLE_DEVICES <gpu_id>
+python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__eicu_natural_valid --output_file prediction.json --threshold -1
+python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid.yaml --output_file prediction_raw.json --CUDA_VISIBLE_DEVICES <gpu_id>
+python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__eicu_natural_valid --output_file prediction.json --threshold -1
+```
+
+
+### Codex SQL Generation
+
+To generate SQL queries with Codex, run the code below. The capability to abstain is not implemented for Codex.
+```
+python gpt/codex.py --api_key_path <openai_api_key> --test_data_path dataset/ehrsql/eicu/valid.json --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid --output_file prediction.json --prompt_path gpt/prompts/codex_apidoc.txt
+python gpt/codex.py --api_key_path <openai_api_key> --test_data_path dataset/ehrsql/eicu/valid.json --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid --output_file prediction.json --prompt_path gpt/prompts/codex_apidoc.txt
+python gpt/codex.py --api_key_path <openai_api_key> --test_data_path dataset/ehrsql/eicu/valid.json --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__eicu_natural_valid --output_file prediction.json --prompt_path gpt/prompts/codex_apidoc.txt
+python gpt/codex.py --api_key_path <openai_api_key> --test_data_path dataset/ehrsql/eicu/valid.json --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__eicu_natural_valid --output_file prediction.json --prompt_path gpt/prompts/codex_apidoc.txt
 ```
 
 
 ### Evaluation
 
-To evaluate the generated SQL queries, run the code below.
+To evaluate the generated SQL queries, run the code below. This code is compatible with for both T5 and Codex SQL generation outputs (make sure each prediction output contains both 'id' and 'pred' as keys).
 ```
-python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid/prediction.json --threshold -1
-python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid/prediction.json --threshold -1
-python evaluate.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid/prediction.json --threshold -1
-python evaluate.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid/prediction.json --threshold -1
+python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid/prediction.json
+python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --infernece_result_path ./outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid/prediction.json
+python evaluate.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid/prediction.json
+python evaluate.py --db_path ./dataset/ehrsql/eicu/eicu.db --infernece_result_path ./outputs/eval_t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid/prediction.json
 ```
 
 

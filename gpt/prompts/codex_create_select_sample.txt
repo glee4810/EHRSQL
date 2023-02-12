@@ -1,0 +1,428 @@
+create table patients(
+    row_id int not null,
+    subject_id int not null,
+    gender varchar(5) not null,
+    dob timestamp(0) not null,
+    dod timestamp(0),
+    primary key (row_id)
+)
+/*
+3 example rows from table patients:
+select * from patients limit 3;
+Table: patients
+row_id	subject_id	gender	dob	dod
+0	269	m	2060-10-16 00:00:00	
+1	702	m	2046-08-12 00:00:00	
+2	728	m	2018-08-27 00:00:00	2103-09-03 00:00:00
+*/
+
+create table admissions(
+    row_id int not null,
+    subject_id int not null,
+    hadm_id int not null,
+    admittime timestamp(0) not null,
+    dischtime timestamp(0),
+    admission_type varchar(50) not null,
+    admission_location varchar(50) not null,
+    discharge_location varchar(50),
+    insurance varchar(255) not null,
+    language varchar(10),
+    marital_status varchar(50),
+    ethnicity varchar(200) not null,
+    age int not null,
+    primary key (row_id),
+    foreign key (subject_id) references patients(subject_id)
+)
+/*
+3 example rows from table admissions:
+select * from admissions limit 3;
+Table: admissions
+row_id	subject_id	hadm_id	admittime	dischtime	admission_type	admission_location	discharge_location	insurance	language	marital_status	ethnicity	age
+0	366	134462	2101-12-04 20:27:00	2101-12-08 15:18:00	emergency	emergency room admit	home health care	medicare	engl	single	hispanic or latino	52
+1	369	145787	2104-10-18 07:15:00	2104-10-25 14:20:00	elective	phys referral/normal deli	snf	medicare		married	white	75
+2	370	123421	2104-03-16 01:17:00	2104-03-20 18:57:00	emergency	emergency room admit	rehab/distinct part hosp	medicare		married	white	83
+*/
+
+create table d_icd_diagnoses(
+    row_id int not null,
+    icd9_code varchar(10) not null,
+    short_title varchar(50) not null,
+    long_title varchar(255) not null,
+    primary key (row_id)
+)
+/*
+3 example rows from table d_icd_diagnoses:
+select * from d_icd_diagnoses limit 3;
+Table: d_icd_diagnoses
+row_id	icd9_code	short_title	long_title
+0	01166	tb pneumonia-oth test	tuberculous pneumonia [any form], tubercle bacilli not found by bacteriological or histological examination, but tuberculosis confirmed by other methods [inoculation of animals]
+1	01170	tb pneumothorax-unspec	tuberculous pneumothorax, unspecified
+2	01171	tb pneumothorax-no exam	tuberculous pneumothorax, bacteriological or histological examination not done
+*/
+
+create table d_icd_procedures(
+    row_id int not null,
+    icd9_code varchar(10) not null,
+    short_title varchar(50) not null,
+    long_title varchar(255) not null,
+    primary key (row_id)
+)
+/*
+3 example rows from table d_icd_procedures:
+select * from d_icd_procedures limit 3;
+Table: d_icd_procedures
+row_id	icd9_code	short_title	long_title
+0	851	canthotomy	canthotomy
+1	852	blepharorrhaphy	blepharorrhaphy
+2	859	adjust lid position nec	other adjustment of lid position
+*/
+
+create table d_labitems(
+    row_id int not null,
+    itemid int not null,
+    label varchar(200) not null,
+    primary key (row_id, row_id)
+)
+/*
+3 example rows from table d_labitems:
+select * from d_labitems limit 3;
+Table: d_labitems
+row_id	itemid	label
+0	51346	blasts
+1	51347	eosinophils
+2	51348	hematocrit, csf
+*/
+
+create table d_items(
+    row_id int not null,
+    itemid int not null,
+    label varchar(200) not null,
+    linksto varchar(50) not null,
+    primary key (row_id)
+)
+/*
+3 example rows from table d_items:
+select * from d_items limit 3;
+Table: d_items
+row_id	itemid	label	linksto
+0	497	patient controlled analgesia (pca) [inject]	chartevents
+1	498	pca lockout (min)	chartevents
+2	499	pca medication	chartevents
+*/
+
+create table diagnoses_icd(
+    row_id int not null,
+    subject_id int not null,
+    hadm_id int not null,
+    icd9_code varchar(10) not null,
+    charttime timestamp(0) not null,
+    primary key (row_id),
+    foreign key (subject_id) references patients(subject_id),
+    foreign key (hadm_id) references admissions(hadm_id),
+    foreign key (icd9_code) references d_icd_diagnoses(icd9_code)
+)
+/*
+3 example rows from table diagnoses_icd:
+select * from diagnoses_icd limit 3;
+Table: diagnoses_icd
+row_id	subject_id	hadm_id	icd9_code	charttime
+0	273	158689	v1052	2104-04-28 06:11:00
+1	273	158689	7767	2104-04-28 06:11:00
+2	273	158689	77981	2104-04-28 06:11:00
+*/
+
+create table procedures_icd(
+    row_id int not null,
+    subject_id int not null,
+    hadm_id int not null,
+    icd9_code varchar(10) not null,
+    charttime timestamp(0) not null,
+    primary key (row_id),
+    foreign key (subject_id) references patients(subject_id),
+    foreign key (hadm_id) references admissions(hadm_id),
+    foreign key (icd9_code) references d_icd_procedures(icd9_code)
+)
+/*
+3 example rows from table procedures_icd:
+select * from procedures_icd limit 3;
+Table: procedures_icd
+row_id	subject_id	hadm_id	icd9_code	charttime
+0	28600	189217	9671	2105-06-23 12:54:00
+1	28600	189217	9396	2105-06-23 12:54:00
+2	28600	189217	9671	2105-06-23 12:54:00
+*/
+
+create table labevents(
+    row_id int not null,
+    subject_id int not null,
+    hadm_id int not null,
+    itemid int not null,
+    charttime timestamp(0),
+    valuenum double precision,
+    valueuom varchar(20),
+    primary key (row_id),
+    foreign key (subject_id) references patients(subject_id),
+    foreign key (hadm_id) references admissions(hadm_id),
+    foreign key (itemid) references d_labitems(itemid)
+)
+/*
+3 example rows from table labevents:
+select * from labevents limit 3;
+Table: labevents
+row_id	subject_id	hadm_id	itemid	charttime	valuenum	valueuom
+0	138	108120	51275	2104-11-06 06:00:00	46.9	sec
+1	138	108120	51248	2104-11-06 06:00:00	27.9	pg
+2	138	108120	51221	2104-11-06 08:25:00	24.6	%
+*/
+
+create table prescriptions(
+    row_id int not null,
+    subject_id int not null,
+    hadm_id int not null,
+    startdate timestamp(0) not null,
+    enddate timestamp(0),
+    drug varchar(100) not null,
+    dose_val_rx varchar(120) not null,
+    dose_unit_rx varchar(120) not null,
+    route varchar(120) not null,
+    primary key (row_id),
+    foreign key (subject_id) references patients(subject_id),
+    foreign key (hadm_id) references admissions(hadm_id)
+)
+/*
+3 example rows from table prescriptions:
+select * from prescriptions limit 3;
+Table: prescriptions
+row_id	subject_id	hadm_id	startdate	enddate	drug	dose_val_rx	dose_unit_rx	route
+0	138	108120	2104-11-06 00:00:00	2104-11-07 00:00:00	atenolol	25.0	mg	ng
+1	138	108120	2104-11-06 00:00:00	2104-11-07 00:00:00	clopidogrel bisulfate	75.0	mg	po
+2	138	108120	2104-11-06 00:00:00	2104-11-07 00:00:00	d5w	250.0	ml	iv
+*/
+
+create table cost(
+    row_id int not null,
+    subject_id int not null,
+    hadm_id int not null,
+    event_type varchar(20) not null,
+    event_id int not null,
+    chargetime timestamp(0) not null,
+    cost double precision not null,
+    primary key (row_id)
+)
+/*
+3 example rows from table cost:
+select * from cost limit 3;
+Table: cost
+row_id	subject_id	hadm_id	event_type	event_id	chargetime	cost
+0	273	158689	diagnoses_icd	0	2104-04-28 06:11:00	4.68
+1	273	158689	diagnoses_icd	1	2104-04-28 06:11:00	3.88
+2	273	158689	diagnoses_icd	2	2104-04-28 06:11:00	5.94
+*/
+
+create table chartevents(
+    row_id int not null,
+    subject_id int not null,
+    hadm_id int not null,
+    icustay_id int not null,
+    itemid int not null,
+    charttime timestamp(0) not null,
+    valuenum double precision,
+    valueuom varchar(50),
+    primary key (row_id),
+    foreign key (subject_id) references patients(subject_id),
+    foreign key (hadm_id) references admissions(hadm_id),
+    foreign key (icustay_id) references icustays(icustay_id),
+    foreign key (itemid) references d_items(itemid)
+);
+/*
+3 example rows from table chartevents:
+select * from chartevents limit 3;
+Table: chartevents
+row_id	subject_id	hadm_id	icustay_id	itemid	charttime	valuenum	valueuom
+0	138	108120	275067	51	2104-11-06 17:30:00	103.0	mmhg
+1	138	108120	275067	8368	2104-11-06 17:45:00	64.0	mmhg
+2	138	108120	275067	618	2104-11-06 17:45:00	14.0	bpm
+*/
+
+create table inputevents_cv(
+    row_id int not null,
+    subject_id int not null,
+    hadm_id int not null,
+    icustay_id int not null,
+    charttime timestamp(0) not null,
+    itemid int not null,
+    amount double precision,
+    primary key (row_id),
+    foreign key (subject_id) references patients(subject_id),
+    foreign key (hadm_id) references admissions(hadm_id),
+    foreign key (icustay_id) references icustays(icustay_id),
+    foreign key (itemid) references d_items(itemid)
+)
+/*
+3 example rows from table inputevents_cv:
+select * from inputevents_cv limit 3;
+Table: inputevents_cv
+row_id	subject_id	hadm_id	icustay_id	charttime	itemid	amount
+0	14458	107873	266333	2104-09-15 16:00:00	30090	10.0
+1	14458	107873	266333	2104-09-16 11:00:00	30056	250.0
+2	14458	107873	266333	2104-09-16 18:00:00	30018	10.0
+*/
+
+create table outputevents(
+    row_id int not null,
+    subject_id int not null,
+    hadm_id int not null,
+    icustay_id int not null,
+    charttime timestamp(0) not null,
+    itemid int not null,
+    value double precision,
+    primary key (row_id),
+    foreign key (subject_id) references patients(subject_id),
+    foreign key (hadm_id) references admissions(hadm_id),
+    foreign key (icustay_id) references icustays(icustay_id),
+    foreign key (itemid) references d_items(itemid)
+)
+/*
+3 example rows from table outputevents:
+select * from outputevents limit 3;
+Table: outputevents
+row_id	subject_id	hadm_id	icustay_id	charttime	itemid	value
+0	14458	107873	266333	2104-09-14 21:00:00	40055	100.0
+1	14458	107873	266333	2104-09-14 23:30:00	226559	500.0
+2	14458	107873	266333	2104-09-15 00:00:00	40055	700.0
+*/
+
+create table microbiologyevents(
+    row_id int not null,
+    subject_id int not null,
+    hadm_id int not null,
+    charttime timestamp(0) not null,
+    spec_type_desc varchar(100),
+    org_name varchar(100),
+    primary key (row_id),
+    foreign key (subject_id) references patients(subject_id),
+    foreign key (hadm_id) references admissions(hadm_id)
+)
+/*
+3 example rows from table microbiologyevents:
+select * from microbiologyevents limit 3;
+Table: microbiologyevents
+row_id	subject_id	hadm_id	charttime	spec_type_desc	org_name
+0	162	195893	2104-04-03 13:50:00	blood culture	
+1	162	195893	2104-04-05 08:15:00	fluid,other	escherichia coli
+2	269	106296	2100-11-22 07:40:00	mini-bal	pseudomonas aeruginosa
+*/
+
+create table icustays(
+    row_id int not null,
+    subject_id int not null,
+    hadm_id int not null,
+    icustay_id int not null,    
+    first_careunit varchar(20) not null,
+    last_careunit varchar(20) not null,
+    first_wardid smallint not null,
+    last_wardid smallint not null,    
+    intime timestamp(0) not null,
+    outtime timestamp(0),
+    primary key (row_id),
+    foreign key (subject_id) references patients(subject_id),
+    foreign key (hadm_id) references admissions(hadm_id)
+)
+/*
+3 example rows from table icustays:
+select * from icustays limit 3;
+Table: icustays
+row_id	subject_id	hadm_id	icustay_id	first_careunit	last_careunit	first_wardid	last_wardid	intime	outtime
+0	269	106296	206613	micu	micu	50	50	2100-11-22 11:05:29	2100-11-25 17:46:57
+1	273	158689	241507	sicu	sicu	57	57	2104-04-28 06:12:05	2104-04-29 17:52:11
+2	138	108120	275067	micu	micu	52	52	2104-11-06 11:56:13	2104-11-07 11:10:58
+*/
+
+create table transfers(
+    row_id int not null,
+    subject_id int not null,
+    hadm_id int not null,
+    icustay_id int,
+    eventtype varchar(20) not null,
+    careunit varchar(20),
+    wardid smallint,
+    intime timestamp(0) not null,
+    outtime timestamp(0),
+    primary key (row_id),
+    foreign key (subject_id) references patients(subject_id),
+    foreign key (hadm_id) references admissions(hadm_id),
+    foreign key (icustay_id) references icustays(icustay_id)
+)
+/*
+3 example rows from table transfers:
+select * from transfers limit 3;
+Table: transfers
+row_id	subject_id	hadm_id	icustay_id	eventtype	careunit	wardid	intime	outtime
+0	162	195893	284604.0	admit	ccu	57.0	2104-04-03 14:40:00	2104-04-04 22:48:00
+1	162	195893		transfer		48.0	2104-04-04 22:48:00	2104-04-06 13:48:00
+2	162	195893		discharge			2104-04-06 13:48:00	
+*/
+
+
+Question: count the number of patients who have received the bicarbonate, stool test since 4 years ago.
+SQL: select count( distinct admissions.subject_id ) from admissions where admissions.hadm_id in ( select labevents.hadm_id from labevents where labevents.itemid in ( select d_labitems.itemid from d_labitems where d_labitems.label = 'bicarbonate, stool' ) and datetime(labevents.charttime) >= datetime('2105-12-31 23:59:00','-4 year') )
+
+Question: how many hours has it been since patient 2518 was first prescribed bupropion during the current hospital encounter?
+SQL: select 24 * ( strftime('%J','2105-12-31 23:59:00') - strftime('%J',prescriptions.startdate) ) from prescriptions where prescriptions.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 2518 and admissions.dischtime is null ) and prescriptions.drug = 'bupropion' order by prescriptions.startdate asc limit 1
+
+Question: what is the top four most frequently performed microbiology tests for patients who receive inject into thorax cavit since 2103 that follow during the same hospital visit?
+SQL: select t3.spec_type_desc from ( select t2.spec_type_desc, dense_rank() over ( order by count(*) desc ) as c1 from ( select admissions.subject_id, procedures_icd.charttime, admissions.hadm_id from procedures_icd join admissions on procedures_icd.hadm_id = admissions.hadm_id where procedures_icd.icd9_code = ( select d_icd_procedures.icd9_code from d_icd_procedures where d_icd_procedures.short_title = 'inject into thorax cavit' ) and strftime('%Y',procedures_icd.charttime) >= '2103' ) as t1 join ( select admissions.subject_id, microbiologyevents.spec_type_desc, microbiologyevents.charttime, admissions.hadm_id from microbiologyevents join admissions on microbiologyevents.hadm_id = admissions.hadm_id where strftime('%Y',microbiologyevents.charttime) >= '2103' ) as t2 on t1.subject_id = t2.subject_id where t1.charttime < t2.charttime and t1.hadm_id = t2.hadm_id group by t2.spec_type_desc ) as t3 where t3.c1 <= 4
+
+Question: what was the organism name found in the last bile test of patient 7107 since 07/2105?
+SQL: select microbiologyevents.org_name from microbiologyevents where microbiologyevents.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 7107 ) and microbiologyevents.spec_type_desc = 'bile' and microbiologyevents.org_name is not null and strftime('%Y-%m',microbiologyevents.charttime) >= '2105-07' order by microbiologyevents.charttime desc limit 1
+
+Question: for patients who were given heart countershock nec during the last year, what are the top four most frequent lab tests that followed afterwards during the same hospital encounter?
+SQL: select d_labitems.label from d_labitems where d_labitems.itemid in ( select t3.itemid from ( select t2.itemid, dense_rank() over ( order by count(*) desc ) as c1 from ( select admissions.subject_id, procedures_icd.charttime, admissions.hadm_id from procedures_icd join admissions on procedures_icd.hadm_id = admissions.hadm_id where procedures_icd.icd9_code = ( select d_icd_procedures.icd9_code from d_icd_procedures where d_icd_procedures.short_title = 'heart countershock nec' ) and datetime(procedures_icd.charttime,'start of year') = datetime('2105-12-31 23:59:00','start of year','-1 year') ) as t1 join ( select admissions.subject_id, labevents.itemid, labevents.charttime, admissions.hadm_id from labevents join admissions on labevents.hadm_id = admissions.hadm_id where datetime(labevents.charttime,'start of year') = datetime('2105-12-31 23:59:00','start of year','-1 year') ) as t2 on t1.subject_id = t2.subject_id where t1.charttime < t2.charttime and t1.hadm_id = t2.hadm_id group by t2.itemid ) as t3 where t3.c1 <= 4 )
+
+Question: what are the minimum yearly number of patients diagnosed with reflux esophagitis?
+SQL: select min(t1.c1) from ( select count( distinct diagnoses_icd.hadm_id ) as c1 from diagnoses_icd where diagnoses_icd.icd9_code = ( select d_icd_diagnoses.icd9_code from d_icd_diagnoses where d_icd_diagnoses.short_title ='reflux esophagitis' ) group by strftime('%Y',diagnoses_icd.charttime) ) as t1
+
+Question: what intake did patient 14671 eat for the first time on 12/31/2105?
+SQL: select d_items.label from d_items where d_items.itemid in ( select inputevents_cv.itemid from inputevents_cv where inputevents_cv.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 14671 ) ) and strftime('%Y-%m-%d',inputevents_cv.charttime) = '2105-12-31' order by inputevents_cv.charttime asc limit 1 )
+
+Question: how many times did patient 60219 visit the hospital in 2104?
+SQL: select count( distinct admissions.hadm_id ) from admissions where admissions.subject_id = 60219 and strftime('%Y',admissions.admittime) = '2104'
+
+Question: show me the top four most common intakes until 1 year ago?
+SQL: select d_items.label from d_items where d_items.itemid in ( select t1.itemid from ( select inputevents_cv.itemid, dense_rank() over ( order by count(*) desc ) as c1 from inputevents_cv where datetime(inputevents_cv.charttime) <= datetime('2105-12-31 23:59:00','-1 year') group by inputevents_cv.itemid ) as t1 where t1.c1 <= 4 )
+
+Question: what was the name of the drug, which patient 57023 was prescribed in the same hospital encounter after being diagnosed with single lb in-hosp w/o cs last month?
+SQL: select t2.drug from ( select admissions.subject_id, diagnoses_icd.charttime, admissions.hadm_id from diagnoses_icd join admissions on diagnoses_icd.hadm_id = admissions.hadm_id where admissions.subject_id = 57023 and diagnoses_icd.icd9_code = ( select d_icd_diagnoses.icd9_code from d_icd_diagnoses where d_icd_diagnoses.short_title ='single lb in-hosp w/o cs' ) and datetime(diagnoses_icd.charttime,'start of month') = datetime('2105-12-31 23:59:00','start of month','-1 month') ) as t1 join ( select admissions.subject_id, prescriptions.drug, prescriptions.startdate, admissions.hadm_id from prescriptions join admissions on prescriptions.hadm_id = admissions.hadm_id where admissions.subject_id = 57023 and datetime(prescriptions.startdate,'start of month') = datetime('2105-12-31 23:59:00','start of month','-1 month') ) as t2 on t1.subject_id = t2.subject_id where t1.charttime < t2.startdate and t1.hadm_id = t2.hadm_id
+
+Question: what patient 42757's age is during their first hospital encounter?
+SQL: select admissions.age from admissions where admissions.subject_id = 42757 and admissions.dischtime is not null order by admissions.admittime asc limit 1
+
+Question: how did patient 70516 last come to the hospital since 2104?
+SQL: select admissions.admission_type from admissions where admissions.subject_id = 70516 and strftime('%Y',admissions.admittime) >= '2104' order by admissions.admittime desc limit 1
+
+Question: what is patient 24517's minimum arterial bp [diastolic] value until 08/22/2104?
+SQL: select min(chartevents.valuenum) from chartevents where chartevents.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 24517 ) ) and chartevents.itemid in ( select d_items.itemid from d_items where d_items.label = 'arterial bp [diastolic]' and d_items.linksto = 'chartevents' ) and strftime('%Y-%m-%d',chartevents.charttime) <= '2104-08-22'
+
+Question: how much does diagnosing long-term use of insulin cost?
+SQL: select distinct cost.cost from cost where cost.event_type = 'diagnoses_icd' and cost.event_id in ( select diagnoses_icd.row_id from diagnoses_icd where diagnoses_icd.icd9_code = ( select d_icd_diagnoses.icd9_code from d_icd_diagnoses where d_icd_diagnoses.short_title = 'long-term use of insulin' ) )
+
+Question: when did patient 14321 receive an intake for the last time?
+SQL: select inputevents_cv.charttime from inputevents_cv where inputevents_cv.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 14321 ) ) order by inputevents_cv.charttime desc limit 1
+
+Question: how many patients until 2103 had nutren pulmonary intake?
+SQL: select count( distinct admissions.subject_id ) from admissions where admissions.hadm_id in ( select icustays.hadm_id from icustays where icustays.icustay_id in ( select inputevents_cv.icustay_id from inputevents_cv where inputevents_cv.itemid in ( select d_items.itemid from d_items where d_items.label = 'nutren pulmonary' and d_items.linksto = 'inputevents_cv' ) and strftime('%Y',inputevents_cv.charttime) <= '2103' ) )
+
+Question: how many days has it been since patient 1561 first received a.45% normal saline intake on the current icu visit?
+SQL: select 1 * ( strftime('%J','2105-12-31 23:59:00') - strftime('%J',inputevents_cv.charttime) ) from inputevents_cv where inputevents_cv.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 1561 ) and icustays.outtime is null ) and inputevents_cv.itemid in ( select d_items.itemid from d_items where d_items.label = '.45% normal saline' and d_items.linksto = 'inputevents_cv' ) order by inputevents_cv.charttime asc limit 1
+
+Question: how much difference of arterial bp [systolic] was there in patient 30235 last measured on the first icu visit compared to the second to last value measured on the first icu visit?
+SQL: select ( select chartevents.valuenum from chartevents where chartevents.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 30235 ) and icustays.outtime is not null order by icustays.intime asc limit 1 ) and chartevents.itemid in ( select d_items.itemid from d_items where d_items.label = 'arterial bp [systolic]' and d_items.linksto = 'chartevents' ) order by chartevents.charttime desc limit 1 ) - ( select chartevents.valuenum from chartevents where chartevents.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 30235 ) and icustays.outtime is not null order by icustays.intime asc limit 1 ) and chartevents.itemid in ( select d_items.itemid from d_items where d_items.label = 'arterial bp [systolic]' and d_items.linksto = 'chartevents' ) order by chartevents.charttime desc limit 1 offset 1 )
+
+Question: how many oxymetazoline prescription cases are there in 2105?
+SQL: select count(*) from prescriptions where prescriptions.drug = 'oxymetazoline' and strftime('%Y',prescriptions.startdate) = '2105'
+
+Question: did patient 20165 have a greater arterial bp mean value second measured on the first intensive care unit visit compared to the first value measured on the first intensive care unit visit?
+SQL: select ( select chartevents.valuenum from chartevents where chartevents.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 20165 ) and icustays.outtime is not null order by icustays.intime asc limit 1 ) and chartevents.itemid in ( select d_items.itemid from d_items where d_items.label = 'arterial bp mean' and d_items.linksto = 'chartevents' ) order by chartevents.charttime asc limit 1 offset 1 ) > ( select chartevents.valuenum from chartevents where chartevents.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 20165 ) and icustays.outtime is not null order by icustays.intime asc limit 1 ) and chartevents.itemid in ( select d_items.itemid from d_items where d_items.label = 'arterial bp mean' and d_items.linksto = 'chartevents' ) order by chartevents.charttime asc limit 1 )
+
+Question: TEST_QUESTION
+select
