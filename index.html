@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records</title>
-        <meta name="description" content="EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering (QA) on electronic health records (MIMIC-III and eICU) The questions are collected from 222 hospital staff, including physicians, nurses, insurance review and health records teams, etc. The dataset can be used to test three aspects of QA models: generating a wide range of SQL queries asked in the hospital workplace, understanding various types of time expressions (absolute, relative, or both), and the capability to abstain from answering (querying the database) when the model prediction is not confident (trustworthy Text-to-SQL task).">
+        <meta name="description" content="EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering (QA) on electronic health records (MIMIC-III and eICU). The questions were collected from 222 hospital staff, including physicians, nurses, insurance review and health records teams, etc. The dataset can be used to test three aspects of QA models over tables: generating a wide range of SQL queries asked in the hospital workplace, understanding various time expressions (absolute, relative, or both), and the capability to abstain from answering when the model prediction is not confident. We call this task <q>trustworthy semantic parsing.</q>">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<link rel="shortcut icon" href="/EHRSQL/logo.png">
@@ -46,7 +46,7 @@
 								<div class="infoHeadline">
 									<h2>What is EHRSQL?</h2>
 								</div>
-								<p>EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering (QA) on electronic health records (MIMIC-III and eICU) The questions are collected from 222 hospital staff, including physicians, nurses, insurance review and health records teams, etc. The dataset can be used to test three aspects of QA models: generating a wide range of SQL queries asked in the hospital workplace, understanding various types of time expressions (absolute, relative, or both), and the capability to abstain from answering (querying the database) when the model prediction is not confident (trustworthy Text-to-SQL task).</p>
+								<p>EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering (QA) on electronic health records (MIMIC-III and eICU). The questions were collected from 222 hospital staff, including physicians, nurses, insurance review and health records teams, etc. The dataset can be used to test three aspects of QA models over tables: generating a wide range of SQL queries asked in the hospital workplace, understanding various time expressions (absolute, relative, or both), and the capability to abstain from answering when the model prediction is not confident. We call this task <q>trustworthy semantic parsing.</q></p>
                                 <a class="btn actionBtn" href="https://arxiv.org/abs/2301.07695">EHRSQL Paper</a>
 								<hr>
 								<!-- <div class="infoHeadline">
@@ -61,22 +61,22 @@
 								</div>
                                 <p> The dataset is distributed under the <a href="https://creativecommons.org/licenses/by-sa/4.0/legalcode">CC BY-SA 4.0</a> license.
 								<ul class="list-unstyled">
-									<li><a class="btn actionBtn inverseBtn" href="https://github.com/glee4810/EHRSQL/tree/main/dataset/ehrsql/mimic_iii" download>Training / Dev Set (MIMIC-III)</a></li>
-									<li><a class="btn actionBtn inverseBtn" href="https://github.com/glee4810/EHRSQL/tree/main/dataset/ehrsql/eicu" download>Training / Dev Set (eICU)</a></li>
-									<li><a class="btn actionBtn inverseBtn" href="https://github.com/glee4810/EHRSQL/blob/main/dataset/ehrsql/tables.json" download>DB Schema (MIMIC-III / eICU)</a></li>									
+									<li><a class="btn actionBtn inverseBtn" href="https://github.com/glee4810/EHRSQL/tree/main/dataset/ehrsql/mimic_iii" download>Training / Valid Set (MIMIC-III)</a></li>
+									<li><a class="btn actionBtn inverseBtn" href="https://github.com/glee4810/EHRSQL/tree/main/dataset/ehrsql/eicu" download>Training / Valid Set (eICU)</a></li>
+									<li><a class="btn actionBtn inverseBtn" href="https://github.com/glee4810/EHRSQL/blob/main/dataset/ehrsql/tables.json" download>DB Schema (MIMIC-III & eICU)</a></li>									
 								</ul>
 								</p>
 								<div class="infoHeadline">
 									<h2>Evaluation</h2>
 								</div>
-								<p>To run the evaluation, use <code>python evaluation.py --db_path &lt;path_to_db&gt; --infernece_result_path &lt;path_to_prediction_file&gt; --threshold_path &lt;threshold_path&gt;</code>. It is highly recommended that <code>&lt;threshold_path&gt;</code>, txt file that only contains a threshold value, should also be provided to <code>python evaluation.py</code> to determine the degree of confidence on the model's prediction. EHRSQL tests not only how much a system can perform well in generating SQL queries but also the ability to abstain when the system is not sure of its prediction.
+								<p>To run the evaluation script, use <code>python evaluation.py --db_path &lt;path_to_db&gt; --infernece_result_path &lt;path_to_prediction_file&gt;</code>. It is highly recommended that the model prediction file should contain the generated SQL queries and null if abstained. EHRSQL tests not only how much a system can perform well in generating SQL queries but also the ability to abstain when the system is not sure of its prediction.
 								<ul class="list-unstyled">
 									<li><a class="btn actionBtn inverseBtn" href="https://worksheets.codalab.org/rest/bundles/0xd95cb6e7d8b94518aca0907e088f2b12/contents/blob/" download>Evaluation Script</a></li>
 									<li><a class="btn actionBtn inverseBtn" href="https://worksheets.codalab.org/bundles/0x6a367bdf154946cf9548919edfe27b5c/" download>Sample Prediction File</a></li>
 								</ul>
 								</p>
 								<!-- <p>Once you are satisfied with your model performance on the dev set, you are encouraged to send your output to <a href="mailto:gyubok.lee@kaist.ac.kr">gyubok.lee@kaist.ac.kr</a> with your dev performance and the code to get the official scores on the test set.</p> -->
-								<p>Once you have a built a model that works to your expectations on the de dv set, you can submit it to get official scores on the dev and a hidden test set. To preserve the integrity of test results, we do not release the test set to the public. Instead, we require you to submit your model so that we can run it on the test set for you. Here's a tutorial walking you through official evaluation of your model:</p>
+								<p>Once you have a built a model that works to your expectations on the validation set, you can submit it to get official scores on a hidden test set. To preserve the integrity of test results, we do not release the test set to the public. Instead, we require you to submit your model and prediction script so that we can run it on the test set for you. Here's a tutorial walking you through official evaluation of your model:</p>
 								<a class="btn actionBtn inverseBtn" href="https://worksheets.codalab.org/worksheets/0x87677f3f7fe647d69f9e247c2be76b8e">Submission Tutorial</a>
 								<div class="infoHeadline">
 									<h2>Trustworthy Text-to-SQL Example</h2>
@@ -90,7 +90,7 @@
 										where prescriptions.drug = 'clobetasol propionate 0.05% ointment' </p>
 									<br>
 									<p><b>Unanswerable Question</b>: <br>
-										What is the name of the medication which should not be administered during the contrast arteriogram-leg treatment? (assume this is not in the training data)</p>
+										What is the name of the medication which should not be administered during the contrast arteriogram-leg treatment? (assume this is not answerable by the model)</p>
 									<p><b>Systen output</b>: <br> 
 										null
 								</tbody>
@@ -114,15 +114,15 @@
 						<div class="infoCard">
 							<div class="infoBody">
 								<div class="infoHeadline">
-									<h2>Leaderboard: MIMIC-III</h2>
+									<h2>Leaderboard: MIMIC-III (p_exe>99)</h2>
 								</div>
-								<p>Here are the overall scores evaluated on MIMIC-III test set. The final model output should be either predicted SQL queries or "null" if abstained (determined by <code>&lt;threshold&gt;</code>). EHRSQL uses F1_ans and F1_exe scores for evaluation, and the final results are ranked based on F1.</p>
+								<p>The final model output should be either predicted SQL queries or "null" if abstained. We use R_exe for evaluating two scenarios: models that exceeds precisions of 99 and 95. We only rank predictions that meet the criteria (i.e., >p_exe99) and other scores are reported but not ranked. We suggest to use the validation data to estimate whether the test performance exceeds p_exe=99 or p_exe=95. Here are the overall scores on MIMIC-III test set that exceeds p_exe=99.</p>
 								<table class="table performanceTable">
 									<tr>
 										<th>Rank</th>
 										<th>Model</th>
-										<th>F1_ans</th>
-										<th>F1_exe</th>
+										<th>P_exe</th>
+										<th>R_exe</th>
 									</tr>
 									<!-- <tr>
 										<td>
@@ -146,34 +146,21 @@
 											T5-base (percentile)</a>
 											<p class="institution">Anonymous</p>
 										</td>
-										<td><b>91.4</b></td>
+										<td><b>89.9</b></td>
 										<td><b>89.9</b></td>
 									</tr>
 
 									<tr>
 										<td>
-											<p>2</p>
+											<p>-1</p>
 											<span class="date label label-default">July 31, 2022</span>
 										</td>
 										<td style="word-break:break-word;">
-											T5-base (clustering)</a>
+											Codex</a>
 											<p class="institution">Anonymous</p>
 										</td>
 										<td>86.5</td>
 										<td>83.8</td>
-									</tr>
-
-									<tr>
-										<td>											
-											<p>3</p>
-											<span class="date label label-default">July 31, 2022</span>
-										</td>
-										<td style="word-break:break-word;">
-											T5-base (none)</a>
-											<p class="institution">Anonymous</p>
-										</td>
-										<td>80.3</td>
-										<td>76.6</td>
 									</tr>
 
 									</tr>
@@ -183,15 +170,15 @@
 						<div class="infoCard">
 							<div class="infoBody">
 								<div class="infoHeadline">
-									<h2>Leaderboard: eICU</h2>
+									<h2>Leaderboard: MIMIC-III (p_exe>95)</h2>
 								</div>
-								<p>Here are the overall scores on eICU test set.</p>
+								<p>Here are the overall scores on MIMIC-III test set that exceeds p_exe=95.</p>
 								<table class="table performanceTable">
 									<tr>
 										<th>Rank</th>
 										<th>Model</th>
-										<th>F1_ans</th>
-										<th>F1_exe</th>
+										<th>P_exe</th>
+										<th>R_exe</th>										
 									</tr>
 									<!-- <tr>
 										<td>
@@ -215,34 +202,21 @@
 											T5-base (percentile)</a>
 											<p class="institution">Anonymous</p>
 										</td>
-										<td><b>90.8</b></td>
 										<td><b>89.5</b></td>
+										<td><b>89.5</b></td>										
 									</tr>
 
 									<tr>
 										<td>
-											<p>2</p>
+											<p>-1</p>
 											<span class="date label label-default">July 31, 2022</span>
 										</td>
 										<td style="word-break:break-word;">
-											T5-base (clustering)</a>
+											Codex</a>
 											<p class="institution">Anonymous</p>
 										</td>
-										<td>86.1</td>
-										<td>82.5</td>
-									</tr>
-
-									<tr>
-										<td>
-											<p>3</p>
-											<span class="date label label-default">July 31, 2022</span>
-										</td>
-										<td style="word-break:break-word;">
-											T5-base (none)</a>
-											<p class="institution">Anonymous</p>
-										</td>
-										<td>80.4</td>
-										<td>76.5</td>										
+										<td>86.5</td>
+										<td>83.8</td>
 									</tr>
 
 									</tr>
