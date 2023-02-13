@@ -6,8 +6,8 @@ import warnings
 def parse_args():
     args = argparse.ArgumentParser()
     args.add_argument('--infernece_result_path', required=True, type=str, help='path for inference')
-    args.add_argument('--input_file', default='prediction_raw.json', type=str, help='input file name')
-    args.add_argument('--output_file', default='prediction.json', type=str, help='outnput file name')
+    args.add_argument('--input_file', default='prediction_raw.json', type=str, help='path for inference')
+    args.add_argument('--output_file', default='prediction.json', type=str, help='path for inference')    
     args.add_argument("--threshold", type=float, default=-1, help='entropy threshold to abstrain from answering')
     return args.parse_args()
 
@@ -22,14 +22,14 @@ if __name__ == '__main__':
     with open(input_file, 'r') as f:
         data = json.load(f)
 
-    result = []
+    result = {}
     for id_, line in data.items():
         ent = max(line['sequence_entropy'])
         if ent <= threshold:
             pred = line['pred']
         else:
             pred = 'null'
-        result.append({'id': id_, 'pred': pred})
+        result[id_] = pred
 
     out_file = os.path.join(args.infernece_result_path, args.output_file)
     with open(out_file, 'w') as f:

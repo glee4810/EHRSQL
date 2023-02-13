@@ -4,6 +4,8 @@ import time
 import openai
 import argparse
 import numpy as np
+from tqdm import tqdm
+
 
 def parse_args():
     args = argparse.ArgumentParser()
@@ -45,8 +47,8 @@ if __name__ == '__main__':
     with open(args.test_data_path) as json_file:
         data = json.load(json_file)
 
-    result = []
-    for line in data:
+    result = {}
+    for line in tqdm(data):
         id_ = line['id']
         question = line['question']
         prompt_to_run = prompt
@@ -59,7 +61,7 @@ if __name__ == '__main__':
                 exit()
             except:
                 time.sleep(60)
-        result.append({'id': id_, 'pred': pred})
+        result[id_] = pred
 
     out_file = os.path.join(args.infernece_result_path, args.output_file)
     with open(out_file, 'w') as f:

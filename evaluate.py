@@ -3,10 +3,9 @@
 import os
 import sys
 import json
-import numpy as np
 import argparse
 import sqlite3
-import warnings
+import numpy as np
 import multiprocessing as mp
 from collections import OrderedDict
 from func_timeout import func_timeout, FunctionTimedOut
