@@ -9,17 +9,20 @@ import numpy as np
 import multiprocessing as mp
 from collections import OrderedDict
 from func_timeout import func_timeout, FunctionTimedOut
+from utils.process import post_process_sql
+
 
 def parse_args():
     args = argparse.ArgumentParser()
-    args.add_argument('--infernece_result_path', required=True, type=str, help='path for inference')
-    args.add_argument('--db_path', required=True, type=str, help='path database')    
+    args.add_argument('--data_file', metavar='data.json', help='input data json file')
+    args.add_argument('--pred_file', metavar='pred.json', help='model predictions')
+    args.add_argument('--db_path', required=True, type=str, help='path database')
     args.add_argument("--num_workers", type=int, default=-1)
     args.add_argument("--timeout", type=int, default=60.0, help='execution time limit in sec')
     args.add_argument("--out_file", type=str, default=None, help='path to save the output file')
     args.add_argument("--ndigits", type=int, default=2, help='scores rounded to ndigits')
+    args.add_argument("--current_time", type=str, default='2105-12-31 23:59:00')
     return args.parse_args()
-
 
 exec_result = []
 def result_tracker(result):
@@ -66,24 +69,27 @@ def execute_query_distributed(real, pred, db_path, num_workers):
     pool.close()
     pool.join()
 
-
 def main(args):
-
     num_workers = mp.cpu_count() if args.num_workers==-1 else args.num_workers
-    with open(args.infernece_result_path, 'r') as f:
+    with open(args.data_file, 'r') as f:
         data = json.load(f)
-    print(f'[result] {len(data)} lines loaded')
+    with open(args.pred_file, 'r') as f:
+        pred = json.load(f)
 
     data_id = []
     query_real = []
     query_pred = []
     impossible = []
-    cnt = 0
-    for idx_, line in data.items():
-        data_id.append(idx_)
-        query_real.append(line['real'])
-        query_pred.append(line['pred'])
-        impossible.append(line['is_impossible'])
+    for line in data:
+        id_ = line['id']
+        data_id.append(id_)
+        real = post_process_sql(line['query'], current_time=args.current_time)
+        query_real.append(real)
+        if id_ in pred:
+            query_pred.append(post_process_sql(pred[id_], current_time=args.current_time))
+        else:
+            query_pred.append('n/a')
+            impossible.append(line['is_impossible'])
 
     exec_real = []
     exec_pred = []
