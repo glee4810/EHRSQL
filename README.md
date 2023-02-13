@@ -194,7 +194,7 @@ If the databases are not available, no execution accuracy (EX) is measured, but 
 
 
 
-### T5 Training
+### T5 Training & SQL Generation with abstention
 
 To train T5-base models, run the code below.
 ```
@@ -203,9 +203,6 @@ python T5/main.py --config T5/config/ehrsql/training/t5_ehrsql_mimic3_natural_lr
 python T5/main.py --config T5/config/ehrsql/training/t5_ehrsql_eicu_natural_lr0.001.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
 python T5/main.py --config T5/config/ehrsql/training/t5_ehrsql_eicu_natural_lr0.001_schema.yaml --CUDA_VISIBLE_DEVICES <gpu_id>
 ```
-
-
-### T5 SQL Generation with abstention
 
 To generate SQL queries with T5, run the code below.
 ```
