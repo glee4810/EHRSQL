@@ -5,7 +5,6 @@ import openai
 import argparse
 import numpy as np
 from tqdm import tqdm
-from utils.process import post_process_sql
 
 
 def parse_args():
@@ -15,7 +14,6 @@ def parse_args():
     args.add_argument('--test_data_path', required=True, type=str, help='eval data path')
     args.add_argument('--infernece_result_path', required=True, type=str, help='path for inference')
     args.add_argument('--output_file', default='prediction.json', type=str, help='outnput file name')
-    args.add_argument('--current_time', default='2105-12-31 23:59:00', type=str)
     return args.parse_args()
 
 def run_engine(prompt):
@@ -58,7 +56,6 @@ if __name__ == '__main__':
             try:
                 prompt_to_run = prompt_to_run.replace('TEST_QUESTION', question)
                 pred = run_engine(prompt_to_run)
-                pred = post_process_sql(pred, current_time=args.current_time)
                 break
             except KeyboardInterrupt:
                 exit()
