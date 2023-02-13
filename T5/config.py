@@ -22,7 +22,7 @@ class Config():
 
     def add_model_param(self):
         self.parser.add_argument('--dataset', type=str, help='dataset')
-        self.parser.add_argument('--db_id', type=str, help='db_id', choices=['mimic3', 'eicu', 'all'])
+        self.parser.add_argument('--db_id', type=str, help='db_id', choices=['mimic3', 'eicu'])
         self.parser.add_argument('--train_data_path', type=str, help='train data path')
         self.parser.add_argument('--valid_data_path', type=str, help='eval data path')
         self.parser.add_argument('--output_dir', type=str, default='outputs', help='output directory')

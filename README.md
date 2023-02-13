@@ -5,7 +5,9 @@ EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering
 The dataset is released along with our paper: [EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records](https://arxiv.org/abs/2301.07695) (NeurIPS 2022 Datasets and Benchmarks). For more information, please refer to our paper.
 
 
-##  Requirments and Installation
+# Under Construction
+
+<!-- ##  Requirments and Installation
 - Python version >= 3.7
 - Pytorch version == 1.7.1
 - SQLite3 version >= 3.33.0
@@ -241,4 +243,4 @@ python evaluate.py --db_path ./dataset/ehrsql/eicu/eicu.db --data_file dataset/e
 
 ## Have Questions?
 
-Ask us questions at our Github issues page or contact gyubok.lee@kaist.ac.kr.
+Ask us questions at our Github issues page or contact gyubok.lee@kaist.ac.kr. -->
