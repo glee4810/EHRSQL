@@ -50,7 +50,7 @@ class Config():
         self.parser.add_argument('--save_every_epoch', type=bool, default=False)
         self.parser.add_argument('--show_eval_sample', type=bool, default=True)
         self.parser.add_argument('--keep_last_ckpt', type=int, default=-1)
-        self.parser.add_argument('--early_stop_patience', type=int, default=-1, help='num val eval')
+        self.parser.add_argument('--early_stop_patience', type=int, default=-1)
 
         # wandb parameters
         self.parser.add_argument('--use_wandb', type=bool, default=False)

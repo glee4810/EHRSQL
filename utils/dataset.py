@@ -143,11 +143,12 @@ class EHRSQL_Dataset(Dataset):
 
 
 class DataCollator(object):
-    def __init__(self, tokenizer, return_tensors='pt', padding=True, truncation=True):
+    def __init__(self, tokenizer, return_tensors='pt', padding=True, truncation=True, max_length=512):
         self.tokenizer = tokenizer
         self.return_tensors = return_tensors
         self.padding = padding
         self.truncation = truncation
+        self.max_length = max_length
 
     def __call__(self, batch):
 
@@ -162,8 +163,8 @@ class DataCollator(object):
             is_impossibles.append(instance['is_impossible'])
             data_ids.append(instance['id'])
             
-        inputs = self.tokenizer(input_ids, return_tensors=self.return_tensors, padding=self.padding, truncation=self.truncation)
-        outputs = self.tokenizer(labels, return_tensors=self.return_tensors, padding=self.padding, truncation=self.truncation)
+        inputs = self.tokenizer(input_ids, return_tensors=self.return_tensors, padding=self.padding, truncation=self.truncation, max_length=self.max_length)
+        outputs = self.tokenizer(labels, return_tensors=self.return_tensors, padding=self.padding, truncation=self.truncation, max_length=self.max_length)
 
         fields = {
             "inputs": inputs.input_ids,

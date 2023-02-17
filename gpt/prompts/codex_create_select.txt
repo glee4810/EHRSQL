@@ -233,7 +233,7 @@ create table chartevents(
     foreign key (hadm_id) references admissions(hadm_id),
     foreign key (icustay_id) references icustays(icustay_id),
     foreign key (itemid) references d_items(itemid)
-);
+)
 /*
 3 example rows from table chartevents:
 select * from chartevents limit 3;

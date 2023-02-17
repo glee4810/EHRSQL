@@ -7,7 +7,6 @@ exp_name : eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_val
 mode: eval
 load_model_path: outputs/t5_ehrsql_mimic3_natural_lr0.001_schema/checkpoint_best.pth.tar
 eval_batch_size: 8
-current_time: "2105-12-31 23:59:00"
 
 tables_path: dataset/ehrsql/tables.json
 add_schema: true

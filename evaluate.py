@@ -79,7 +79,6 @@ def main(args):
     data_id = []
     query_real = []
     query_pred = []
-    impossible = []
     for line in data:
         id_ = line['id']
         data_id.append(id_)
@@ -89,7 +88,6 @@ def main(args):
             query_pred.append(post_process_sql(pred[id_], current_time=args.current_time))
         else:
             query_pred.append('n/a')
-            impossible.append(line['is_impossible'])
 
     exec_real = []
     exec_pred = []
@@ -123,11 +121,11 @@ def main(args):
             recall_ans_list.append(1 if ans_pred != 'null' else 0)
             recall_exec_list.append(1 if ans_real == ans_pred else 0)
 
-    precision_ans = sum(precision_ans_list) / len(precision_ans_list)
-    recall_ans = sum(recall_ans_list) / len(recall_ans_list)
+    precision_ans = sum(precision_ans_list) / (len(precision_ans_list)+1e-10)
+    recall_ans = sum(recall_ans_list) / (len(recall_ans_list)+1e-10)
     f1_ans = 2*((precision_ans*recall_ans)/(precision_ans+recall_ans+1e-10))
-    precision_exec = sum(precision_exec_list) / len(precision_exec_list)
-    recall_exec = sum(recall_exec_list) / len(recall_exec_list)
+    precision_exec = sum(precision_exec_list) / (len(precision_exec_list)+1e-10)
+    recall_exec = sum(recall_exec_list) / (len(recall_exec_list)+1e-10)
     f1_exec = 2*((precision_exec*recall_exec)/(precision_exec+recall_exec+1e-10))
 
     out_eval = OrderedDict([

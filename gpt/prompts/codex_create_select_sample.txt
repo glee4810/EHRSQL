@@ -233,7 +233,7 @@ create table chartevents(
     foreign key (hadm_id) references admissions(hadm_id),
     foreign key (icustay_id) references icustays(icustay_id),
     foreign key (itemid) references d_items(itemid)
-);
+)
 /*
 3 example rows from table chartevents:
 select * from chartevents limit 3;
@@ -393,36 +393,6 @@ SQL: select d_items.label from d_items where d_items.itemid in ( select t1.itemi
 
 Question: what was the name of the drug, which patient 57023 was prescribed in the same hospital encounter after being diagnosed with single lb in-hosp w/o cs last month?
 SQL: select t2.drug from ( select admissions.subject_id, diagnoses_icd.charttime, admissions.hadm_id from diagnoses_icd join admissions on diagnoses_icd.hadm_id = admissions.hadm_id where admissions.subject_id = 57023 and diagnoses_icd.icd9_code = ( select d_icd_diagnoses.icd9_code from d_icd_diagnoses where d_icd_diagnoses.short_title ='single lb in-hosp w/o cs' ) and datetime(diagnoses_icd.charttime,'start of month') = datetime('2105-12-31 23:59:00','start of month','-1 month') ) as t1 join ( select admissions.subject_id, prescriptions.drug, prescriptions.startdate, admissions.hadm_id from prescriptions join admissions on prescriptions.hadm_id = admissions.hadm_id where admissions.subject_id = 57023 and datetime(prescriptions.startdate,'start of month') = datetime('2105-12-31 23:59:00','start of month','-1 month') ) as t2 on t1.subject_id = t2.subject_id where t1.charttime < t2.startdate and t1.hadm_id = t2.hadm_id
-
-Question: what patient 42757's age is during their first hospital encounter?
-SQL: select admissions.age from admissions where admissions.subject_id = 42757 and admissions.dischtime is not null order by admissions.admittime asc limit 1
-
-Question: how did patient 70516 last come to the hospital since 2104?
-SQL: select admissions.admission_type from admissions where admissions.subject_id = 70516 and strftime('%Y',admissions.admittime) >= '2104' order by admissions.admittime desc limit 1
-
-Question: what is patient 24517's minimum arterial bp [diastolic] value until 08/22/2104?
-SQL: select min(chartevents.valuenum) from chartevents where chartevents.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 24517 ) ) and chartevents.itemid in ( select d_items.itemid from d_items where d_items.label = 'arterial bp [diastolic]' and d_items.linksto = 'chartevents' ) and strftime('%Y-%m-%d',chartevents.charttime) <= '2104-08-22'
-
-Question: how much does diagnosing long-term use of insulin cost?
-SQL: select distinct cost.cost from cost where cost.event_type = 'diagnoses_icd' and cost.event_id in ( select diagnoses_icd.row_id from diagnoses_icd where diagnoses_icd.icd9_code = ( select d_icd_diagnoses.icd9_code from d_icd_diagnoses where d_icd_diagnoses.short_title = 'long-term use of insulin' ) )
-
-Question: when did patient 14321 receive an intake for the last time?
-SQL: select inputevents_cv.charttime from inputevents_cv where inputevents_cv.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 14321 ) ) order by inputevents_cv.charttime desc limit 1
-
-Question: how many patients until 2103 had nutren pulmonary intake?
-SQL: select count( distinct admissions.subject_id ) from admissions where admissions.hadm_id in ( select icustays.hadm_id from icustays where icustays.icustay_id in ( select inputevents_cv.icustay_id from inputevents_cv where inputevents_cv.itemid in ( select d_items.itemid from d_items where d_items.label = 'nutren pulmonary' and d_items.linksto = 'inputevents_cv' ) and strftime('%Y',inputevents_cv.charttime) <= '2103' ) )
-
-Question: how many days has it been since patient 1561 first received a.45% normal saline intake on the current icu visit?
-SQL: select 1 * ( strftime('%J','2105-12-31 23:59:00') - strftime('%J',inputevents_cv.charttime) ) from inputevents_cv where inputevents_cv.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 1561 ) and icustays.outtime is null ) and inputevents_cv.itemid in ( select d_items.itemid from d_items where d_items.label = '.45% normal saline' and d_items.linksto = 'inputevents_cv' ) order by inputevents_cv.charttime asc limit 1
-
-Question: how much difference of arterial bp [systolic] was there in patient 30235 last measured on the first icu visit compared to the second to last value measured on the first icu visit?
-SQL: select ( select chartevents.valuenum from chartevents where chartevents.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 30235 ) and icustays.outtime is not null order by icustays.intime asc limit 1 ) and chartevents.itemid in ( select d_items.itemid from d_items where d_items.label = 'arterial bp [systolic]' and d_items.linksto = 'chartevents' ) order by chartevents.charttime desc limit 1 ) - ( select chartevents.valuenum from chartevents where chartevents.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 30235 ) and icustays.outtime is not null order by icustays.intime asc limit 1 ) and chartevents.itemid in ( select d_items.itemid from d_items where d_items.label = 'arterial bp [systolic]' and d_items.linksto = 'chartevents' ) order by chartevents.charttime desc limit 1 offset 1 )
-
-Question: how many oxymetazoline prescription cases are there in 2105?
-SQL: select count(*) from prescriptions where prescriptions.drug = 'oxymetazoline' and strftime('%Y',prescriptions.startdate) = '2105'
-
-Question: did patient 20165 have a greater arterial bp mean value second measured on the first intensive care unit visit compared to the first value measured on the first intensive care unit visit?
-SQL: select ( select chartevents.valuenum from chartevents where chartevents.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 20165 ) and icustays.outtime is not null order by icustays.intime asc limit 1 ) and chartevents.itemid in ( select d_items.itemid from d_items where d_items.label = 'arterial bp mean' and d_items.linksto = 'chartevents' ) order by chartevents.charttime asc limit 1 offset 1 ) > ( select chartevents.valuenum from chartevents where chartevents.icustay_id in ( select icustays.icustay_id from icustays where icustays.hadm_id in ( select admissions.hadm_id from admissions where admissions.subject_id = 20165 ) and icustays.outtime is not null order by icustays.intime asc limit 1 ) and chartevents.itemid in ( select d_items.itemid from d_items where d_items.label = 'arterial bp mean' and d_items.linksto = 'chartevents' ) order by chartevents.charttime asc limit 1 )
 
 Question: TEST_QUESTION
 select

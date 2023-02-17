@@ -1,13 +1,12 @@
 # EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records
 
-EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering (QA) on Electronic Health Records ([MIMIC-III](https://physionet.org/content/mimiciii/1.4/) and [eICU](https://physionet.org/content/eicu-crd/2.0/)). The questions are collected from 222 hospital staff, including physicians, nurses, insurance review and health records teams, etc. The dataset can be used to test three aspects of QA models: generating a wide range of SQL queries asked in the hospital workplace, understanding various types of time expressions (absolute, relative, or both), and the capability to abstain from answering (querying the database) when the model prediction is not confident (trustworthy Text-to-SQL task).
+EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering (QA) on Electronic Health Records ([MIMIC-III](https://physionet.org/content/mimiciii/1.4/) and [eICU](https://physionet.org/content/eicu-crd/2.0/)). The questions are collected from 222 hospital staff, including physicians, nurses, insurance review and health records teams, etc. The dataset can be used to test three aspects of QA models: generating a wide range of SQL queries asked in the hospital workplace, understanding various types of time expressions (absolute, relative, or both), and the capability to abstain from answering (querying the database) when the model prediction is not confident (trustworthy semantic parsing task).
 
 The dataset is released along with our paper: [EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records](https://arxiv.org/abs/2301.07695) (NeurIPS 2022 Datasets and Benchmarks). For more information, please refer to our paper.
 
 
-# Under Construction
 
-<!-- ##  Requirments and Installation
+##  Requirments and Installation
 - Python version >= 3.7
 - Pytorch version == 1.7.1
 - SQLite3 version >= 3.33.0
@@ -209,13 +208,13 @@ python T5/main.py --config T5/config/ehrsql/training/t5_ehrsql_eicu_natural_lr0.
 To generate SQL queries with abstention, run the code below.
 ```
 python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid.yaml --output_file prediction_raw.json --CUDA_VISIBLE_DEVICES <gpu_id>
-python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid --output_file prediction.json --threshold -1
+python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid --input_file prediction_raw.json --output_file prediction.json --threshold -1
 python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid.yaml --output_file prediction_raw.json --CUDA_VISIBLE_DEVICES <gpu_id>
-python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid --output_file prediction.json --threshold -1
+python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid --input_file prediction_raw.json  --output_file prediction.json --threshold -1
 python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid.yaml --output_file prediction_raw.json --CUDA_VISIBLE_DEVICES <gpu_id>
-python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__eicu_natural_valid --output_file prediction.json --threshold -1
+python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid --input_file prediction_raw.json  --output_file prediction.json --threshold -1
 python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid.yaml --output_file prediction_raw.json --CUDA_VISIBLE_DEVICES <gpu_id>
-python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__eicu_natural_valid --output_file prediction.json --threshold -1
+python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid --input_file prediction_raw.json  --output_file prediction.json --threshold -1
 ```
 
 
@@ -223,10 +222,8 @@ python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql
 
 To generate SQL queries with Codex, run the code below. The capability to abstain is not implemented for Codex.
 ```
-python gpt/codex.py --api_key_path <openai_api_key> --test_data_path dataset/ehrsql/mimic_iii/valid.json --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid --output_file prediction.json --prompt_path gpt/prompts/codex_apidoc.txt
-python gpt/codex.py --api_key_path <openai_api_key> --test_data_path dataset/ehrsql/mimic_iii/valid.json --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid --output_file prediction.json --prompt_path gpt/prompts/codex_apidoc.txt
-python gpt/codex.py --api_key_path <openai_api_key> --test_data_path dataset/ehrsql/eicu/valid.json --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__eicu_natural_valid --output_file prediction.json --prompt_path gpt/prompts/codex_apidoc.txt
-python gpt/codex.py --api_key_path <openai_api_key> --test_data_path dataset/ehrsql/eicu/valid.json --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__eicu_natural_valid --output_file prediction.json --prompt_path gpt/prompts/codex_apidoc.txt
+python gpt/codex.py --api_key_path <api_key_path> --test_data_path dataset/ehrsql/mimic_iii/valid.json --infernece_result_path outputs/eval_codex_apidoc_ehrsql_mimic3_natural_valid --output_file prediction.json --prompt_path gpt/prompts/codex_apidoc.txt
+python gpt/codex.py --api_key_path <api_key_path> --test_data_path dataset/ehrsql/eicu/valid.json --infernece_result_path outputs/eval_codex_apidoc_ehrsql_eicu_natural_valid --output_file prediction.json --prompt_path gpt/prompts/codex_apidoc.txt
 ```
 
 
@@ -243,4 +240,4 @@ python evaluate.py --db_path ./dataset/ehrsql/eicu/eicu.db --data_file dataset/e
 
 ## Have Questions?
 
-Ask us questions at our Github issues page or contact gyubok.lee@kaist.ac.kr. -->
+Ask us questions at our Github issues page or contact gyubok.lee@kaist.ac.kr.

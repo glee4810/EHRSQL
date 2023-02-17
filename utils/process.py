@@ -11,6 +11,7 @@ def post_process_sql(query,
                                 'diastolic bp':(60.0, 90.0),
                                 'mean bp': (60.0, 110.0)
                             }):
+    query = query.lower()
     if "current_time" in query:
         query = query.replace("current_time", f"'{current_time}'")
     if re.search('[ \n]+([a-zA-Z0-9_]+_lower)', query) and re.search('[ \n]+([a-zA-Z0-9_]+_upper)', query):
