@@ -8,13 +8,15 @@ The dataset is released along with our paper: [EHRSQL: A Practical Text-to-SQL B
 
 ### Citation
 
+When you use the EHRSQL dataset, we would appreciate it if you cite the following:
+
 ```
 @inproceedings{lee2022ehrsql,
   title     = {{EHRSQL}: A Practical Text-to-{SQL} Benchmark for Electronic Health Records},
   author    = {Gyubok Lee and Hyeonji Hwang and Seongsu Bae and Yeonsu Kwon and Woncheol Shin and Seongjun Yang and Minjoon Seo and Jong-Yeup Kim and Edward Choi},
   booktitle = {Thirty-sixth Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
-year={2022},
-  url      = {https://openreview.net/forum?id=B2W8Vy0rarw}
+  year      = {2022},
+  url       = {https://openreview.net/forum?id=B2W8Vy0rarw}
 }
 ```
 
