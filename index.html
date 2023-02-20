@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records</title>
-        <meta name="description" content="EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering (QA) on electronic health records (MIMIC-III and eICU). The questions were collected from 222 hospital staff, including physicians, nurses, insurance review and health records teams, etc. The dataset can be used to test three aspects of QA models over tables: generating a wide range of SQL queries asked in the hospital workplace, understanding various time expressions (absolute, relative, or both), and the capability to abstain from answering when the model prediction is not confident. We call this task <q>trustworthy semantic parsing.</q>">
+        <meta name="description" content="EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering (QA) on electronic health records (MIMIC-III and eICU). The questions were collected from 222 hospital staff, including physicians, nurses, insurance review and health records teams, etc. The dataset can be used to test three aspects of QA models over EHR tables: generating a wide range of SQL queries asked in the hospital workplace, understanding various time expressions (absolute, relative, or both), and the ability to abstain from answering when the model prediction is not confident. We call this task <q>trustworthy semantic parsing.</q>">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 		<link rel="shortcut icon" href="/EHRSQL/logo.png">
@@ -46,7 +46,7 @@
 								<div class="infoHeadline">
 									<h2>What is EHRSQL?</h2>
 								</div>
-								<p>EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering (QA) on electronic health records (MIMIC-III and eICU). The questions were collected from 222 hospital staff, including physicians, nurses, insurance review and health records teams, etc. The dataset can be used to test three aspects of QA models over tables: generating a wide range of SQL queries asked in the hospital workplace, understanding various time expressions (absolute, relative, or both), and the capability to abstain from answering when the model prediction is not confident. We call this task <q>trustworthy semantic parsing.</q></p>
+								<p>EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering (QA) on electronic health records (MIMIC-III and eICU). The questions were collected from 222 hospital staff, including physicians, nurses, insurance review and health records teams, etc. The dataset can be used to test three aspects of QA models over EHR tables: generating a wide range of SQL queries asked in the hospital workplace, understanding various time expressions (absolute, relative, or both), and the ability to abstain from answering when the model prediction is not confident. We call this task <q>trustworthy semantic parsing.</q></p>
                                 <a class="btn actionBtn" href="https://arxiv.org/abs/2301.07695">EHRSQL Paper</a>
 								<hr>
 								<!-- <div class="infoHeadline">
@@ -63,20 +63,20 @@
 								<ul class="list-unstyled">
 									<li><a class="btn actionBtn inverseBtn" href="https://github.com/glee4810/EHRSQL/tree/main/dataset/ehrsql/mimic_iii" download>Training / Valid Set (MIMIC-III)</a></li>
 									<li><a class="btn actionBtn inverseBtn" href="https://github.com/glee4810/EHRSQL/tree/main/dataset/ehrsql/eicu" download>Training / Valid Set (eICU)</a></li>
-									<li><a class="btn actionBtn inverseBtn" href="https://github.com/glee4810/EHRSQL/blob/main/dataset/ehrsql/tables.json" download>DB Schema (MIMIC-III & eICU)</a></li>									
+									<li><a class="btn actionBtn inverseBtn" href="https://github.com/glee4810/EHRSQL/blob/main/dataset/ehrsql/tables.json" download>DB Schema (MIMIC-III & eICU)</a></li>
 								</ul>
 								</p>
 								<div class="infoHeadline">
 									<h2>Evaluation</h2>
 								</div>
-								<p>To run the evaluation script, use <code>python evaluate.py --db_path &lt;path_to_db&gt; --data_file &lt;data_file&gt; --pred_file &lt;pred_file&gt;</code>. We highly recommend that the model prediction file should contain the generated SQL queries and null if abstained. EHRSQL tests not only how much a system can perform well in generating SQL queries but also the ability to abstain when the system is not sure of its prediction.
+								<p>To run the evaluation script, use <code>python evaluate.py --db_path &lt;path_to_db&gt; --data_file &lt;data_file&gt; --pred_file &lt;pred_file&gt;</code>. We highly recommend that the model prediction file should contain the generated SQL queries and null if abstained. EHRSQL tests not only how much a model can perform well in generating SQL queries but also the ability to abstain when the model is not sure of its prediction.
 								<ul class="list-unstyled">
-									<li><a class="btn actionBtn inverseBtn" href="https://worksheets.codalab.org/rest/bundles/0xd95cb6e7d8b94518aca0907e088f2b12/contents/blob/" download>Evaluation Script</a></li>
+									<li><a class="btn actionBtn inverseBtn" href="https://github.com/glee4810/EHRSQL/blob/main/evaluate.py" download>Evaluation Script</a></li>
 									<li><a class="btn actionBtn inverseBtn" href="https://worksheets.codalab.org/bundles/0x6a367bdf154946cf9548919edfe27b5c/" download>Sample Prediction File</a></li>
 								</ul>
 								</p>
 								<!-- <p>Once you are satisfied with your model performance on the dev set, you are encouraged to send your output to <a href="mailto:gyubok.lee@kaist.ac.kr">gyubok.lee@kaist.ac.kr</a> with your dev performance and the code to get the official scores on the test set.</p> -->
-								<p>Once you have a built a model that works to your expectations on the validation set, you can submit it to get official scores on a hidden test set. To preserve the integrity of test results, we do not release the test set to the public. Instead, we require you to submit your model and prediction script so that we can run it on the test set for you. Here's a tutorial walking you through official evaluation of your model:</p>
+								<p>Once you have built a model that works to your expectations on the validation set, you can submit it to get official scores on a hidden test set. To preserve the integrity of test results, we do not release the test set to the public. Instead, we require you to submit your model and prediction script so that we can run it on the test set for you. Here's a tutorial walking you through official evaluation of your model:</p>
 								<a class="btn actionBtn inverseBtn" href="https://worksheets.codalab.org/worksheets/0x87677f3f7fe647d69f9e247c2be76b8e">Submission Tutorial</a>
 								<div class="infoHeadline">
 									<h2>Trustworthy Semantic Parsing Example</h2>
@@ -114,9 +114,9 @@
 						<div class="infoCard">
 							<div class="infoBody">
 								<div class="infoHeadline">
-									<h2>Leaderboard: MIMIC-III (p_exe≥99)</h2>
+									<h2>Leaderboard: MIMIC-III (valid p_exe ≥ 99%)</h2>
 								</div>
-								<p>The final model output should be either the predicted SQL queries or "null" if abstained. We use R_exe for evaluating two scenarios: models that exceed precisions of 99 and 95. We only rank predictions that meet the criteria (i.e., p_exe≥99) based on R_exe and other scores are reported but not ranked. We suggest to use the validation set to estimate whether the predicted test outputs exceed p_exe=99 or p_exe=95. Here are the overall scores on MIMIC-III test set that exceeds p_exe=99.</p>
+								<p>The final model output should contain the predicted SQL queries and "null" if abstained. We use R_exe for evaluating two settings: models that exceed precisions of 99% and 95%. We only rank models that meet the criteria (i.e., p_exe ≥ 99%) on the validation set and the rest are reported in the leaderboard but not ranked. We suggest first using the validation set to check whether the model that is ready to submit exceeds p_exe = 99% or p_exe = 95% on the validation set.</p>
 								<table class="table performanceTable">
 									<tr>
 										<th>Rank</th>
@@ -131,7 +131,7 @@
 											<span class="date label label-default">Feb 14, 2023</span>
 										</td>
 										<td style="word-break:break-word;">
-											T5-base (threshold-tuned)</a>
+											T5-base (Threshold-tuned)</a>
 											<p class="institution">Anonymous</p>
 										</td>
 										<td><b>100.0</b></td>
@@ -140,7 +140,7 @@
 
 									<tr>
 										<td>
-											<p></p>
+											<p>n/a</p>
 											<span class="date label label-default">Feb 14, 2023</span>
 										</td>
 										<td style="word-break:break-word;">
@@ -158,9 +158,9 @@
 						<div class="infoCard">
 							<div class="infoBody">
 								<div class="infoHeadline">
-									<h2>Leaderboard: MIMIC-III (p_exe≥95)</h2>
+									<h2>Leaderboard: MIMIC-III (p_exe ≥ 95%)</h2>
 								</div>
-								<p>Here are the overall scores on MIMIC-III test set that exceeds p_exe=95.</p>
+								<!-- <p>Here are the model performances on the MIMIC-III test set (where their validation perforamce exceeds p_exe=95).</p> -->
 								<table class="table performanceTable">
 									<tr>
 										<th>Rank</th>
@@ -175,16 +175,16 @@
 											<span class="date label label-default">Feb 14, 2023</span>
 										</td>
 										<td style="word-break:break-word;">
-											T5-base (threshold-tuned)</a>
+											T5-base (Threshold-tuned)</a>
 											<p class="institution">Anonymous</p>
 										</td>
-										<td><b>89.5</b></td>
-										<td><b>90.6</b></td>
+										<td><b>89.4</b></td>
+										<td><b>90.3</b></td>
 									</tr>
 
 									<tr>
 										<td>
-											<p></p>
+											<p>n/a</p>
 											<span class="date label label-default">Feb 14, 2023</span>
 										</td>
 										<td style="word-break:break-word;">
