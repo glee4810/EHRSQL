@@ -8,8 +8,6 @@ The dataset is released along with our paper: [EHRSQL: A Practical Text-to-SQL B
 
 ### Citation
 
-The dataset is annotated by 11 college students. When you use the Spider dataset, we would appreciate it if you cite the following:
-
 ```
 @inproceedings{lee2022ehrsql,
   title     = {{EHRSQL}: A Practical Text-to-{SQL} Benchmark for Electronic Health Records},
