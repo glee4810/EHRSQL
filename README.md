@@ -6,7 +6,24 @@ The dataset is released along with our paper: [EHRSQL: A Practical Text-to-SQL B
 
 
 
-##  Requirments and Installation
+### Citation
+
+The dataset is annotated by 11 college students. When you use the Spider dataset, we would appreciate it if you cite the following:
+
+```
+@inproceedings{lee2022ehrsql,
+  title     = {{EHRSQL}: A Practical Text-to-{SQL} Benchmark for Electronic Health Records},
+  author    = {Gyubok Lee and Hyeonji Hwang and Seongsu Bae and Yeonsu Kwon and Woncheol Shin and Seongjun Yang and Minjoon Seo and Jong-Yeup Kim and Edward Choi},
+  booktitle = {Thirty-sixth Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
+year={2022},
+  url      = {https://openreview.net/forum?id=B2W8Vy0rarw}
+}
+```
+
+
+### Getting Started
+
+###  Requirments and Installation
 - Python version >= 3.7
 - Pytorch version == 1.7.1
 - SQLite3 version >= 3.33.0
@@ -23,11 +40,6 @@ pip install nltk
 pip install scikit-learn
 pip install func-timeout
 ```
-
-
-
-## Getting Started
-
 
 ### Dataset
 
@@ -83,7 +95,6 @@ For `valid.json`, answerable instances are structured in the same manner as `tra
     "id": "9db3a82be08e143d7976b015"
 }
 ```
-
 
 
 
@@ -238,6 +249,6 @@ python evaluate.py --db_path ./dataset/ehrsql/eicu/eicu.db --data_file dataset/e
 ```
 
 
-## Have Questions?
+### Have Questions?
 
 Ask us questions at our Github issues page or contact gyubok.lee@kaist.ac.kr.
