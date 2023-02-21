@@ -1,19 +1,9 @@
-import os
-import re
 import time
-import sqlite3
-import numpy as np
-import multiprocessing as mp
-from utils.process import post_process_sql
-
 import torch
 from torch.utils.data import DataLoader, SequentialSampler
 
 
 def generate_sql(model, eval_dataset, args, collator, verbose=0):
-
-    if not hasattr(args, 'current_time'):
-        Exception(f'Current_time must be specified to handle relative time expressions!')
 
     file_name = args.config.split('/')[-1]
     start_time = time.time()
@@ -69,9 +59,6 @@ def generate_sql(model, eval_dataset, args, collator, verbose=0):
                 real = tokenizer.decode(labels[i], skip_special_tokens=True)
                 pred = tokenizer.decode(preds[i], skip_special_tokens=True)
 
-                real_executable = post_process_sql(real, current_time=args.current_time)
-                pred_executable = post_process_sql(pred, current_time=args.current_time)
-
                 pred_tensor = preds[i][1:]
                 entropy = sequences_entropy[i].tolist()
                 if tokenizer.eos_token_id in pred_tensor:
@@ -79,8 +66,8 @@ def generate_sql(model, eval_dataset, args, collator, verbose=0):
                     entropy = entropy[:pred_eos_idx+1]
                 result = {}
                 result['question'] = text
-                result['real'] = real_executable
-                result['pred'] = pred_executable
+                result['real'] = real
+                result['pred'] = pred
                 result['db_id'] = db_ids[i]
                 result['is_impossible'] = is_impossibles[i]
                 result['sequence_entropy'] = tuple(entropy)
