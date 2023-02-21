@@ -1,7 +1,7 @@
 import json
+from tqdm import tqdm
 from random import Random
 from typing import Optional, Dict
-from tqdm import tqdm
 from dataclasses import dataclass
 
 import torch
