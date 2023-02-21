@@ -13,7 +13,6 @@ def generate_sql(model, eval_dataset, args, collator, verbose=0):
                                 sampler=eval_sampler, 
                                 batch_size=args.eval_batch_size, 
                                 drop_last=False,
-                                num_workers=args.num_workers,
                                 collate_fn=collator
                                 )
     tokenizer = eval_dataset.tokenizer
