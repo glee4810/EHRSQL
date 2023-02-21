@@ -1,9 +1,8 @@
-import re
-import csv
 import os
-import numpy as np
-import sqlite3
+import re
 import time
+import sqlite3
+import numpy as np
 import multiprocessing as mp
 from utils.process import post_process_sql
 
