@@ -206,9 +206,6 @@ python3 preprocess_db.py --data_dir <path_to_mimic_iii_csv_files> --db_name mimi
 python3 preprocess_db.py --data_dir <path_to_eicu_csv_files> --db_name eicu --deid --timeshift --current_time "2105-12-31 23:59:00" --start_year 2100 --time_span 5 --cur_patient_ratio 0.1
 ```
 
-If the databases are not available, no execution accuracy (EX) is measured, but exact string matching (ESM) and false negative rate (FNR) are still measured. 
-
-
 
 ### T5 SQL Generation
 
