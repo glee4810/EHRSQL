@@ -7,7 +7,7 @@ The dataset is released along with our paper: [EHRSQL: A Practical Text-to-SQL B
 
 ### Leaderboard
 
-`02/22/2023` We created the leaderboard for the trustworthy semantic parsing task. Please refer to [the task site](https://glee4810.github.io/EHRSQL) for more general introduction and the leaderboard.
+`02/22/2023` We created the leaderboard website for the trustworthy semantic parsing task. Please refer to [the task site](https://glee4810.github.io/EHRSQL) for more general introduction and the leaderboard on MIMIC-III.
 
 
 ### Citation
