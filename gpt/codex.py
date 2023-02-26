@@ -25,7 +25,7 @@ def run_engine(prompt):
       top_p=1.0,
       frequency_penalty=0.0,
       presence_penalty=0.0,
-      stop=["\n\n"]
+      stop=[";"]
     )
     text = response['choices'][0]['text']
     text = f'select{text}'
