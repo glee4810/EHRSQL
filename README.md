@@ -232,7 +232,7 @@ python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql
 
 ### Codex SQL Generation
 
-To generate SQL queries with Codex, run the code below. The capability to abstain is not implemented for Codex.
+To generate SQL queries with Codex, run the code below. The ability to abstain is not implemented for Codex.
 ```
 python gpt/codex.py --api_key_path <api_key_path> --test_data_path dataset/ehrsql/mimic_iii/valid.json --infernece_result_path outputs/eval_codex_apidoc_ehrsql_mimic3_natural_valid --output_file prediction.json --prompt_path gpt/prompts/codex_apidoc.txt
 python gpt/codex.py --api_key_path <api_key_path> --test_data_path dataset/ehrsql/eicu/valid.json --infernece_result_path outputs/eval_codex_apidoc_ehrsql_eicu_natural_valid --output_file prediction.json --prompt_path gpt/prompts/codex_apidoc.txt
