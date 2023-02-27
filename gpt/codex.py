@@ -12,7 +12,7 @@ def parse_args():
     args.add_argument('--api_key_path', default='OPENAI_API_KEY.json', type=str, help='path for openai api key')
     args.add_argument('--prompt_path', default='', type=str, help='path for prompt')
     args.add_argument('--test_data_path', required=True, type=str, help='eval data path')
-    args.add_argument('--infernece_result_path', required=True, type=str, help='path for inference')
+    args.add_argument('--infernece_result_path', default='./', type=str, help='path for inference')
     args.add_argument('--output_file', default='prediction.json', type=str, help='outnput file name')
     return args.parse_args()
 
@@ -25,7 +25,7 @@ def run_engine(prompt):
       top_p=1.0,
       frequency_penalty=0.0,
       presence_penalty=0.0,
-      stop=[";"]
+      stop=["#", ";"]
     )
     text = response['choices'][0]['text']
     text = f'select{text}'
