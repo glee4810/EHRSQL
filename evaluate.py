@@ -56,7 +56,7 @@ def result_tracker(result):
     exec_result.append(result)
 
 def process_answer(ans):
-    return str(sorted([str(ret[0]) for ret in ans]))
+    return str(sorted([set(ret[0]) for ret in ans]))
 
 def execute(sql, db_path):
     con = sqlite3.connect(db_path)
