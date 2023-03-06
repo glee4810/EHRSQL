@@ -49,7 +49,7 @@ def post_process_sql(query,
                 query = query.replace(vital_lower_expr, f"{vital_range[0]}").replace(vital_upper_expr, f"{vital_range[1]}")
     query = query.replace("''", "'").replace('< =', '<=')
     query = query.replace("%y", "%Y").replace('%j', '%J')
-    query = query.replace("'now'", current_time)
+    query = query.replace("'now'", f"'{current_time}'")
     return query
 
 exec_result = []
