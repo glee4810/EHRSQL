@@ -220,13 +220,13 @@ python T5/main.py --config T5/config/ehrsql/training/t5_ehrsql_eicu_natural_lr0.
 To generate SQL queries with abstention, run the code below.
 ```
 python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid.yaml --output_file prediction_raw.json --CUDA_VISIBLE_DEVICES <gpu_id>
-python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid --input_file prediction_raw.json --output_file prediction.json --threshold -1
+python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_best__mimic3_natural_valid --input_file prediction_raw.json --output_file prediction.json --threshold 0.14144589
 python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid.yaml --output_file prediction_raw.json --CUDA_VISIBLE_DEVICES <gpu_id>
-python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid --input_file prediction_raw.json  --output_file prediction.json --threshold -1
+python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_mimic3_natural_lr0.001_schema_best__mimic3_natural_valid --input_file prediction_raw.json  --output_file prediction.json --threshold 0.08602921
 python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid.yaml --output_file prediction_raw.json --CUDA_VISIBLE_DEVICES <gpu_id>
-python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid --input_file prediction_raw.json  --output_file prediction.json --threshold -1
+python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_eicu_natural_lr0.001_best__eicu_natural_valid --input_file prediction_raw.json  --output_file prediction.json --threshold 0.22580192
 python T5/main.py --config T5/config/ehrsql/eval/t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid.yaml --output_file prediction_raw.json --CUDA_VISIBLE_DEVICES <gpu_id>
-python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid --input_file prediction_raw.json  --output_file prediction.json --threshold -1
+python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_t5_ehrsql_eicu_natural_lr0.001_schema_best__eicu_natural_valid --input_file prediction_raw.json  --output_file prediction.json --threshold 0.15388077
 ```
 
 
