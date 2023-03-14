@@ -239,7 +239,7 @@ python evaluate.py --db_path ./dataset/ehrsql/eicu/eicu.db --data_file dataset/e
 
 ## Have Questions?
 
-Ask us questions at our Github issues page or contact gyubok.lee@kaist.ac.kr.
+Ask us questions on our Github issues page or contact gyubok.lee@kaist.ac.kr.
 
 
 
