@@ -10,20 +10,6 @@ The dataset is released along with our paper: [EHRSQL: A Practical Text-to-SQL B
 `02/22/2023` We created the leaderboard website for the trustworthy semantic parsing task. Please refer to [the task site](https://glee4810.github.io/EHRSQL) for more general introduction and the leaderboard on MIMIC-III.
 
 
-### Citation
-
-When you use the EHRSQL dataset, we would appreciate it if you cite the following:
-
-```
-@inproceedings{lee2022ehrsql,
-  title     = {{EHRSQL}: A Practical Text-to-{SQL} Benchmark for Electronic Health Records},
-  author    = {Gyubok Lee and Hyeonji Hwang and Seongsu Bae and Yeonsu Kwon and Woncheol Shin and Seongjun Yang and Minjoon Seo and Jong-Yeup Kim and Edward Choi},
-  booktitle = {Thirty-sixth Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
-  year      = {2022},
-  url       = {https://openreview.net/forum?id=B2W8Vy0rarw}
-}
-```
-
 
 ### Getting Started
 
@@ -250,6 +236,23 @@ python evaluate.py --db_path ./dataset/ehrsql/eicu/eicu.db --data_file dataset/e
 ```
 
 
+
 ### Have Questions?
 
 Ask us questions at our Github issues page or contact gyubok.lee@kaist.ac.kr.
+
+
+
+### Citation
+
+When you use the EHRSQL dataset, we would appreciate it if you cite the following:
+
+```
+@inproceedings{lee2022ehrsql,
+  title     = {{EHRSQL}: A Practical Text-to-{SQL} Benchmark for Electronic Health Records},
+  author    = {Gyubok Lee and Hyeonji Hwang and Seongsu Bae and Yeonsu Kwon and Woncheol Shin and Seongjun Yang and Minjoon Seo and Jong-Yeup Kim and Edward Choi},
+  booktitle = {Thirty-sixth Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
+  year      = {2022},
+  url       = {https://openreview.net/forum?id=B2W8Vy0rarw}
+}
+```
