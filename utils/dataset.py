@@ -22,7 +22,6 @@ class EHRSQL_Dataset(Dataset):
         self.dataset = args.dataset
         self.db_id = args.db_id
         self.tokenizer = tokenizer
-        self.use_para = args.use_para # whether to use paraphrase
         self.add_schema = args.add_schema
         self.shuffle_schema = args.shuffle_schema
         self.random = Random(args.random_seed)
@@ -42,11 +41,6 @@ class EHRSQL_Dataset(Dataset):
                 if instance['id'] in train_data_id_list_all:
                     new_data.append(instance)
             data = new_data
-        if self.use_para:
-            question_key = "question"
-        else:
-            question_key = "template"
-        query_key = "query"
 
         if self.add_schema:
             if self.tables_path is None:
@@ -59,8 +53,8 @@ class EHRSQL_Dataset(Dataset):
             if self.include_impossible==False and 'is_impossible' in line and line['is_impossible']:
                 continue
             annotated_sql = AnnotatedSQL(
-                question=line[question_key].lower() if question_key in line else line['question'],
-                query=line[query_key].lower() if query_key in line else 'null',
+                question=line["question"].lower(),
+                query=line["query"].lower() if "query" in line else 'null',
                 db_id=line["db_id"],
                 is_impossible=line["is_impossible"],
                 id=line["id"]
