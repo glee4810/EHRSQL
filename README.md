@@ -4,11 +4,12 @@ EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering
 
 The dataset is released along with our paper: [EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records](https://arxiv.org/abs/2301.07695) (NeurIPS 2022 Datasets and Benchmarks). For more information, please refer to our paper.
 
-
-## Leaderboard
-
 `02/22/2023` We created the leaderboard website for the trustworthy semantic parsing task. Please refer to [the task site](https://glee4810.github.io/EHRSQL) for more general introduction and the leaderboard on MIMIC-III.
 
+
+## Changelog
+
+`04/30/2023` We corrected minor annotation errors and label inconsistencies in the dataset. Please download the new version.
 
 
 ## Getting Started
