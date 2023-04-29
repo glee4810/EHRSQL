@@ -22,7 +22,7 @@ def set_seeds(seed):
         torch.backends.cudnn.benchmark = False
 
 
-def save(model, optimizer, scheduler, step, best_metric, args, checkpoint_path, name, keep_last_ckpt=-1):
+def save(model, optimizer, scheduler, step, best_metric, args, checkpoint_path, name='last', keep_last_ckpt=-1):
     os.makedirs(checkpoint_path, exist_ok=True)
 
     fp = os.path.join(checkpoint_path, f"checkpoint_{name}.pth.tar")
@@ -36,7 +36,8 @@ def save(model, optimizer, scheduler, step, best_metric, args, checkpoint_path, 
         'best_metric': best_metric
     }
     torch.save(state_dict, fp)
-    shutil.copyfile(fp, os.path.join(checkpoint_path, f"checkpoint_last.pth.tar"))
+    # if name != 'last':
+    #     shutil.copyfile(fp, os.path.join(checkpoint_path, f"checkpoint_last.pth.tar"))
     if keep_last_ckpt>0:
         remove_past_checkpoint(checkpoint_path, keep_last_ckpt=keep_last_ckpt)
 
@@ -77,4 +78,3 @@ def update_args(new_args, prev_args):
         if arg not in new_args:
             setattr(new_args, arg, getattr(prev_args, arg))
     return new_args
-

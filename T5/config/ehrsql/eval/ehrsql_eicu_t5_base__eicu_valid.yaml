@@ -1,0 +1,13 @@
+dataset: ehrsql
+db_id: eicu
+test_data_path: dataset/ehrsql/eicu/valid.json
+use_para: true
+exp_name : eval_ehrsql_eicu_t5_base__eicu_valid
+
+mode: eval
+load_model_path: outputs/ehrsql_eicu_t5_base/checkpoint_best.pth.tar
+eval_batch_size: 8
+
+tables_path: 
+add_schema: false
+shuffle_schema: false

@@ -38,4 +38,3 @@ def init_logger(output_path, args):
     logger.addHandler(console_handler)
 
     return logger
-    

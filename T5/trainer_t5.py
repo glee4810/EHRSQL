@@ -6,6 +6,7 @@ from torch.utils.data import DataLoader, RandomSampler, SequentialSampler
 
 from utils.model_utils import save
 
+from generate import generate_sql
 
 def train(model, optimizer, scheduler, step, train_dataset, eval_dataset, args, collator, best_metric, checkpoint_path, logger=None):
 
@@ -82,22 +83,39 @@ def train(model, optimizer, scheduler, step, train_dataset, eval_dataset, args, 
                                         labels=labels
                                         )[0]
                         valid_loss_list.append(valid_loss.item())
-                    valid_loss_avg = np.mean(valid_loss_list)
+                    valid_loss = sum(valid_loss_list)/len(valid_loss_list)
+
+                    if args.eval_metric == 'loss':
+                        valid_metric = valid_loss
+                    elif args.eval_metric == 'esm':
+                        out_eval = generate_sql(model, eval_dataset, args, collator, verbose=1)
+                        valid_esm = []
+                        for id_ in out_eval:
+                            if out_eval[id_]['real'] == out_eval[id_]['pred']:
+                                valid_esm.append(1)
+                            else:
+                                valid_esm.append(0)
+                        valid_metric = sum(valid_esm)/len(valid_esm)*100
+                    else:
+                        NotImplementedError
 
                     if logger is not None:
-                        log = f"epoch: {epoch} (step: {step}) | "
-                        log += f"valid_loss: {valid_loss_avg:.6f}"
+                        log = f"epoch: {epoch} (step: {step})"
+                        log += f" | valid_loss: {valid_loss:.6f}"
+                        log += f" | valid_{args.eval_metric}: {valid_metric:.6f}"
                         logger.info(log)
                     if args.use_wandb:
-                        wandb.log({f"valid_loss": valid_loss_avg}, step=step)
+                        wandb.log({f"valid_loss": valid_loss}, step=step)
+                        wandb.log({f"valid_{args.eval_metric}": valid_metric}, step=step)
 
-                    if valid_loss_avg <= best_metric:
-                        best_metric = valid_loss_avg
+                    if (args.eval_metric=='loss' and valid_metric < best_metric) or \
+                       (args.eval_metric=='esm' and valid_metric > best_metric):
+                        best_metric = valid_metric
                         patience = 0
-                        save(model, optimizer, scheduler, step, best_metric, args, checkpoint_path, 'best')
+                        save(model, optimizer, scheduler, step, best_metric, args, checkpoint_path, name='best')
                         if logger is not None:
-                            log = f"epoch: {epoch} (step: {step}) | "
-                            log += f"best metric updated - {best_metric:.6f}"
+                            log = f"epoch: {epoch} (step: {step})"
+                            log += f" | best metric updated ({args.eval_metric}) - {best_metric:.6f}"
                             logger.info(log)
                     else:
                         patience += 1
@@ -124,14 +142,15 @@ def train(model, optimizer, scheduler, step, train_dataset, eval_dataset, args, 
                             early_stop_flag = True
                             break
 
-            if step % args.save_every_step == 0:
-                save(model, optimizer, scheduler, step, best_metric, args, checkpoint_path, f'{step}', keep_last_ckpt=args.keep_last_ckpt)
+            if args.save_every_step != -1 and step % args.save_every_step == 0:
+                save(model, optimizer, scheduler, step, best_metric, args, checkpoint_path, name=f'{step}', keep_last_ckpt=args.keep_last_ckpt)
 
             if early_stop_flag or step > args.total_step:
                 break
 
         if args.save_every_epoch:
-            save(model, optimizer, scheduler, step, best_metric, args, checkpoint_path, f'{epoch}_{step}', keep_last_ckpt=args.keep_last_ckpt)
+            save(model, optimizer, scheduler, step, best_metric, args, checkpoint_path, name=f'{epoch}_{step}', keep_last_ckpt=args.keep_last_ckpt)
 
+    # save(model, optimizer, scheduler, step, best_metric, args, checkpoint_path, name='last', keep_last_ckpt=args.keep_last_ckpt)
     if logger is not None:
         logger.info('training completed!')

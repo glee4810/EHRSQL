@@ -5,6 +5,9 @@ def set_optim(args, model):
         optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
     elif args.optim == 'adamw':
         optimizer = torch.optim.AdamW(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
+    elif args.optim == 'adafactor':
+        from transformers.optimization import Adafactor
+        optimizer = Adafactor(model.parameters(), lr=args.lr, relative_step=False)
     if args.scheduler == 'fixed':
         scheduler = FixedScheduler(optimizer)        
     if args.scheduler == 'plateau':

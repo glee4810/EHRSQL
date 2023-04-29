@@ -26,7 +26,7 @@ class Config():
         self.parser.add_argument('--train_data_path', type=str, help='train data path')
         self.parser.add_argument('--valid_data_path', type=str, help='eval data path')
         self.parser.add_argument('--output_dir', type=str, default='outputs', help='output directory')
-        self.parser.add_argument('--output_file', type=str, default='prediction.json', help='output file name')        
+        self.parser.add_argument('--output_file', type=str, default='prediction_raw.json', help='output file name')        
         self.parser.add_argument('--model_name', type=str, default='t5-base')
         self.parser.add_argument('--db_path', type=str, default=None)
         self.parser.add_argument('--add_schema', type=bool, default=False)
@@ -45,19 +45,22 @@ class Config():
         # training parameters
         self.parser.add_argument('--random_seed', type=int, default=0)
         self.parser.add_argument('--report_every_step', type=int, default=50)
-        self.parser.add_argument('--save_every_step', type=int, default=5000)
-        self.parser.add_argument('--eval_every_step', type=int, default=500)
+        self.parser.add_argument('--eval_batch_size', type=int, default=4)
+        self.parser.add_argument('--save_every_step', type=int, default=-1)
         self.parser.add_argument('--save_every_epoch', type=bool, default=False)
         self.parser.add_argument('--show_eval_sample', type=bool, default=True)
+        self.parser.add_argument('--eval_every_step', type=int, default=5000)
+        self.parser.add_argument('--eval_metric', type=str, default='loss', choices=['loss', 'esm'])
         self.parser.add_argument('--keep_last_ckpt', type=int, default=-1)
         self.parser.add_argument('--early_stop_patience', type=int, default=-1)
+        self.parser.add_argument('--training_data_ratio', type=float, default=1.0)
+        self.parser.add_argument('--bf16', type=bool, default=False)
 
         # wandb parameters
         self.parser.add_argument('--use_wandb', type=bool, default=False)
         self.parser.add_argument('--wandb_project', type=bool, default=None)
 
     def add_eval_param(self):
-        self.parser.add_argument('--eval_batch_size', type=int, default=6)
         self.parser.add_argument('--num_beams', type=int, default=5)
         self.parser.add_argument('--max_length', type=int, default=512)
         self.parser.add_argument('--repetition_penalty', type=float, default=1.0)

@@ -50,14 +50,14 @@ if __name__ == '__main__':
         import wandb
         from wandb_api_key import WANDB_API_KEY
         os.environ["WANDB_API_KEY"] = WANDB_API_KEY
-        wandb.init(project=args.wandb_project, name=args.exp_name)
-
+        if args.mode == 'train':
+            wandb.init(project=args.wandb_project, name=args.exp_name)
 
     tokenizer = load_tokenizer(args.model_name)
     data_collator = DataCollator(tokenizer=tokenizer, return_tensors='pt')
 
     if args.mode=='train':
-        train_dataset = EHRSQL_Dataset(path=args.train_data_path, tokenizer=tokenizer, args=args)
+        train_dataset = EHRSQL_Dataset(path=args.train_data_path, tokenizer=tokenizer, args=args, data_ratio=args.training_data_ratio)
         valid_dataset = EHRSQL_Dataset(path=args.valid_data_path, tokenizer=tokenizer, args=args)
         if logger:
             logger.info(f"loaded {len(train_dataset)} training examples from {args.train_data_path}")
@@ -65,15 +65,20 @@ if __name__ == '__main__':
     elif args.mode=='eval':
         test_dataset = EHRSQL_Dataset(path=args.test_data_path, tokenizer=tokenizer, args=args, include_impossible=True)
         print(f"loaded {len(test_dataset)} test examples from {args.test_data_path}")
-        
 
     model = load_model(model_name=args.model_name)
+    if args.bf16:
+        model = model.to(torch.bfloat16)
     if args.init_weights:
         model.init_weights()
     if args.load_model_path is None:
         model = model.to(args.device)
         optimizer, scheduler = set_optim(args, model)
-        step, best_metric = 0, np.inf
+        step = 0
+        if args.eval_metric == 'loss':
+            best_metric = np.inf
+        elif args.eval_metric == 'esm':
+            best_metric = -np.inf
     else:
         model, optimizer, scheduler, args, step, best_metric = load(model, args.load_model_path, args)
         if logger:

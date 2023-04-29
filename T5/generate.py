@@ -48,8 +48,8 @@ def generate_sql(model, eval_dataset, args, collator, verbose=0):
             sequences_scores = generation_output['sequences_scores'].cpu() if args.device == 'cuda' else generation_output['sequences_scores']
             logits = torch.stack(generation_output['scores'], dim=1)[::int(args.num_beams/args.num_samples)]
             logits = logits.cpu() if args.device == 'cuda' else logits
-            output_prob = torch.softmax(logits, dim=2)
-            log_prob = torch.log_softmax(logits, dim=2)
+            output_prob = torch.softmax(logits, dim=2).float()
+            log_prob = torch.log_softmax(logits, dim=2).float()
             sequences_entropy = ( torch.sum(output_prob * log_prob, dim=2) * (-1) ).numpy()
 
             for i in range(len(preds)):

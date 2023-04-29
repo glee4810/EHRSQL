@@ -17,7 +17,7 @@ class AnnotatedSQL:
 
 
 class EHRSQL_Dataset(Dataset):
-    def __init__(self, path, tokenizer, args, include_impossible=False):
+    def __init__(self, path, tokenizer, args, include_impossible=False, data_ratio=1.0):
 
         self.dataset = args.dataset
         self.db_id = args.db_id
@@ -28,24 +28,25 @@ class EHRSQL_Dataset(Dataset):
         self.random = Random(args.random_seed)
         self.add_column_type = args.add_column_type
         self.tables_path = args.tables_path
+        self.data_ratio = data_ratio
         self.include_impossible = include_impossible
 
-        if self.dataset == "ehrsql":
-            with open(path) as json_file:
-                data = json.load(json_file)
-            if self.use_para:
-                question_key = "question"
-            else:
-                question_key = "template"
-            query_key = "query"
-
-        elif args.dataset == 'mimicsql' or args.dataset == 'mimicsqlstar':
-            data = []
-            with open(path) as json_file:
-                for line in json_file:
-                    data.append(json.loads(line))
-            question_key = "question_refine"
-            query_key = "sql"
+        with open(path) as json_file:
+            data = json.load(json_file)
+        if self.data_ratio < 1.0:
+            train_data_id_list_all = [instance['id'] for instance in data]
+            self.random.shuffle(train_data_id_list_all)
+            train_data_id_list_all = train_data_id_list_all[:max(int(len(data) * self.data_ratio), 1)]
+            new_data = []
+            for instance in data:
+                if instance['id'] in train_data_id_list_all:
+                    new_data.append(instance)
+            data = new_data
+        if self.use_para:
+            question_key = "question"
+        else:
+            question_key = "template"
+        query_key = "query"
 
         if self.add_schema:
             if self.tables_path is None:
@@ -57,7 +58,7 @@ class EHRSQL_Dataset(Dataset):
         for line in tqdm(data):
             if self.include_impossible==False and 'is_impossible' in line and line['is_impossible']:
                 continue
-            annotated_sql: AnnotatedSQL = AnnotatedSQL(
+            annotated_sql = AnnotatedSQL(
                 question=line[question_key].lower() if question_key in line else line['question'],
                 query=line[query_key].lower() if query_key in line else 'null',
                 db_id=line["db_id"],
@@ -73,7 +74,7 @@ class EHRSQL_Dataset(Dataset):
 
         if self.add_schema:
             tables_json = [db for db in self.db_json if db["db_id"] == annotated_sql.db_id][0]
-            schema_description = self.get_schema_description(self.add_column_type, tables_json, self.shuffle_schema, self.random)
+            schema_description = self.get_schema_description(tables_json, self.shuffle_schema, self.random)
             question += f" {schema_description}"
 
         processed_annotated_sql: AnnotatedSQL = AnnotatedSQL(
@@ -87,10 +88,8 @@ class EHRSQL_Dataset(Dataset):
         return processed_annotated_sql
 
 
-    def get_schema_description(self, add_column_type: bool, tables_json: Dict, shuffle_schema: bool, random: Random):
-
+    def get_schema_description(self, tables_json: Dict, shuffle_schema: bool, random: Random):
         table_names = tables_json["table_names_original"]
-
         if shuffle_schema:
             random.shuffle(table_names)
 
@@ -98,33 +97,18 @@ class EHRSQL_Dataset(Dataset):
             (column_name[0], column_name[1], column_type)
             for column_name, column_type in zip(tables_json["column_names_original"], tables_json["column_types"])
         ]
-        
+
         schema_description = ""
         for table_index, table_name in enumerate(table_names):
-            table_name = table_name.lower()
-            if table_index == 0:
-                schema_description += "<TAB> " + table_name
-            else:
-                schema_description += " <TAB> " + table_name
-            schema_description += " <COL>"
-            table_columns = [column for column in columns if column[0] == table_index]
-
+            schema_description += f" | {table_name} : "
+            
+            table_columns = [column[1] for column in columns if column[0] == table_index]
             if shuffle_schema:
                 random.shuffle(table_columns)
 
-            for table_column in table_columns:
-                if add_column_type:
-                    column_description = (
-                        f"<type: "
-                        f"{table_column[2].lower()}> "
-                        f"{table_column[1].lower()}"
-                    )
-                else:
-                    column_description = f"{table_column[1].lower()}"
-                schema_description += " " + column_description
+            schema_description += " , ".join(table_columns)
 
-        return schema_description
-
+        return schema_description.lower().lstrip()
 
 
     def __getitem__(self, index):
@@ -162,7 +146,7 @@ class DataCollator(object):
             db_id.append(instance['db_id'])
             is_impossibles.append(instance['is_impossible'])
             data_ids.append(instance['id'])
-            
+
         inputs = self.tokenizer(input_ids, return_tensors=self.return_tensors, padding=self.padding, truncation=self.truncation, max_length=self.max_length)
         outputs = self.tokenizer(labels, return_tensors=self.return_tensors, padding=self.padding, truncation=self.truncation, max_length=self.max_length)
 
