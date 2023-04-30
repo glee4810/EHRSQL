@@ -204,7 +204,7 @@ python T5/main.py --config T5/config/ehrsql/training/ehrsql_mimic3_t5_base.yaml 
 To generate SQL queries with abstention, run the code below.
 ```
 python T5/main.py --config T5/config/ehrsql/eval/ehrsql_mimic3_t5_base__mimic3_valid.yaml --output_file prediction_raw.json --CUDA_VISIBLE_DEVICES <gpu_id>
-python T5/abstain_with_entropy.py --infernece_result_path outputs/ehrsql_mimic3_t5_base --input_file prediction_raw.json --output_file prediction.json --threshold 0.14144589
+python T5/abstain_with_entropy.py --infernece_result_path outputs/eval_ehrsql_mimic3_t5_base__mimic3_valid --input_file prediction_raw.json --output_file prediction.json --threshold 0.14923561
 ```
 
 
@@ -220,7 +220,7 @@ python gpt/codex.py --api_key_path <api_key_path> --test_data_path dataset/ehrsq
 
 To evaluate the generated SQL queries, run the code below. This code is compatible with both T5 and Codex SQL generation outputs.
 ```
-python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --data_file dataset/ehrsql/mimic_iii/valid.json --pred_file ./outputs/ehrsql_mimic3_t5_base__mimic3_valid/prediction.json
+python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --data_file dataset/ehrsql/mimic_iii/valid.json --pred_file ./outputs/eval_ehrsql_mimic3_t5_base__mimic3_valid/prediction.json
 python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --data_file dataset/ehrsql/mimic_iii/valid.json --pred_file ./outputs/eval_ehrsql_mimic3_natural_valid/prediction.json
 ```
 
