@@ -1,15 +1,15 @@
 # EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records
 
-EHRSQL is a large-scale, high-quality text-to-SQL dataset for question answering (QA) on Electronic Health Records ([MIMIC-III](https://physionet.org/content/mimiciii/1.4/) and [eICU](https://physionet.org/content/eicu-crd/2.0/)). The questions are collected from 222 hospital staff, including physicians, nurses, insurance review and health records teams, etc. The dataset can be used to test three aspects of QA models: generating a wide range of SQL queries asked in the hospital workplace, understanding various types of time expressions (absolute, relative, or both), and the capability to abstain from answering (querying the database) when the model prediction is not confident (trustworthy semantic parsing task).
+EHRSQL is a large-scale, high-quality dataset designed for text-to-SQL question answering on Electronic Health Records from [MIMIC-III](https://physionet.org/content/mimiciii/1.4/) and [eICU](https://physionet.org/content/eicu-crd/2.0/). The dataset includes questions collected from 222 hospital staff, such as physicians, nurses, insurance reviewers and health records teams. It can be used to test three aspects of QA models: generating a wide range of SQL queries asked in the hospital workplace, understanding various types of time expressions (absolute, relative, or both), and the capability to abstain from answering (querying the database) when the model prediction is not confident (a trustworthy semantic parsing task).
 
-The dataset is released along with our paper: [EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records](https://arxiv.org/abs/2301.07695) (NeurIPS 2022 Datasets and Benchmarks). For more information, please refer to our paper.
+The dataset is released along with our paper titled [EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records](https://arxiv.org/abs/2301.07695) (NeurIPS 2022 Datasets and Benchmarks). For further details, please refer to our paper.
 
-`02/22/2023` We created a leaderboard website for the trustworthy semantic parsing task. Please refer to [the task site](https://glee4810.github.io/EHRSQL) for more general introduction and the leaderboard on MIMIC-III.
+`02/22/2023` We created a leaderboard website for the trustworthy semantic parsing task. Please visit [the task website](https://glee4810.github.io/EHRSQL) for more general information on the task and a general introduction.
 
 
 ## Changelog
 
-`04/30/2023` We corrected minor annotation errors and label inconsistencies in the dataset. Please download the new version.
+`04/30/2023` We corrected minor annotation errors and label inconsistencies in the dataset. Please download the updated version.
 
 
 ## Getting Started
@@ -36,22 +36,22 @@ pip install func-timeout
 
 #### Question and SQL
 
-For each database, `train.json` contains the following fields:
-- `db_id`: the database id to which this question is addressed.
-- `question`: the paraphrased question 
-- `template`: the template question 
-- `query`: the SQL query corresponding to the question. 
+The `train.json` file contains the following fields for each database:
+- `db_id`: the ID of the database to which the question pertains
+- `question`: the paraphrased version of the question 
+- `template`: the original template question 
+- `query`: the corresponding SQL query for the question 
 - `value`: sampled values from the database
 - `q_tag`: the question template
-- `t_tag`: sampled time template
-- `o_tag`: sampled operation value
-- `tag`: question template (q_tag) combined with time templates (t_tag) and operation values (o_tag)
-- `department`: hospital department where the question is collected from
-- `importance`: the importance of the question in the hospital (high, medium, low, n/a)
-- `para_type`: the source of paraphrase (machine or human)
+- `t_tag`: the sampled time template
+- `o_tag`: the sampled operation value
+- `tag`: the combination of the question template (q_tag) with the time templates (t_tag) and operation values (o_tag)
+- `department`: the hospital department where the question was collected
+- `importance`: the importance of the question in the hospital (high, medium, low, or n/a)
+- `para_type`: the source of the paraphrase (machine or human)
 - `is_impossible`: whether the question is answerable or unanswerable
-- `split`: data split (train, valid, test)
-- `id`: unique id of each data instance
+- `split`: the data split (train, valid, or test)
+- `id`: a unique ID for each data instance
 
 ```json
  {
@@ -73,7 +73,7 @@ For each database, `train.json` contains the following fields:
 }
 ```
 
-For `valid.json`, answerable instances are structured in the same manner as `train.json`. But unanswerable instances have a smaller number of fields.
+In `valid.json`, answerable instances have the same structure as `train.json`. However, unanswerable instances have fewer fields.
 ```json
  {
     "db_id": "mimic_iii",
@@ -91,16 +91,16 @@ For `valid.json`, answerable instances are structured in the same manner as `tra
 
 #### Tables
 
-We follow the same style of table information introduced in [Spider](https://github.com/taoyds/spider). `tables.json` contains the following information for each database:
+We follow the same table information style used in [Spider](https://github.com/taoyds/spider). `tables.json` contains the following information for both databases:
 
-- `db_id`: database id
-- `table_names_original`: original table names stored in the database.
-- `table_names`: cleaned and normalized table names.
-- `column_names_original`: original column names stored in the database. Each column looks like: `[0, "id"]`. `0` is the index of table names in `table_names`. `"id"` is the column name. 
-- `column_names`: cleaned and normalized column names.
-- `column_types`: data type of each column
-- `foreign_keys`: foreign keys in the database. `[7, 2]` means column indices in the `column_names`. These two columns are foreign keys of two different tables.
-- `primary_keys`: primary keys in the database. Each number is the index of `column_names`.
+- `db_id`: the ID of the database
+- `table_names_original`: the original table names stored in the database.
+- `table_names`: the cleaned and normalized table names.
+- `column_names_original`: the original column names stored in the database. Each column has the format `[0, "id"]`. `0` is the index of the table name in `table_names`. `"id"` is the column name. 
+- `column_names`: the cleaned and normalized column names.
+- `column_types`: the data type of each column
+- `foreign_keys`: the foreign keys in the database. `[7, 2]` indicates the column indices in `column_names`. that correspond to foreign keys in two different tables.
+- `primary_keys`: the primary keys in the database. Each number represents the index of `column_names`.
 
 
 ```json
@@ -179,17 +179,17 @@ We follow the same style of table information introduced in [Spider](https://git
 
 ### Database
 
-To access the databases, PhysioNet’s credentialed access (see license) is needed. Below is the links to getting started pages.
+To access the databases, PhysioNet’s credentialed access (see license) is needed. Below are the links to the download pages.
 
 
-- [MIMIC III](https://mimic.mit.edu/docs/gettingstarted/)
-- [eICU](https://eicu-crd.mit.edu/gettingstarted/access/)
+- [MIMIC-III-1.4](https://physionet.org/content/mimiciii/1.4/)
+- [eICU-2.0](https://physionet.org/content/eicu-crd/2.0/)
 
-Once completed, run the code below to preprocess the databases (patient sampling, de-identification, time-shifting, etc.)
+Once completed, run the code below to preprocess the databases. This step involves patient sampling, further de-identification, and time-shifting, and more.
 
 ```
 cd preprocess
-python3 preprocess_db.py --data_dir <path_to_mimic_iii_csv_files> --db_name mimic_iii --deid --timeshift --current_time "2105-12-31 23:59:00" --start_year 2100 --time_span 5 --cur_patient_ratio 0.1 &
+python3 preprocess_db.py --data_dir <path_to_mimic_iii_csv_files> --db_name mimic_iii --deid --timeshift --current_time "2105-12-31 23:59:00" --start_year 2100 --time_span 5 --cur_patient_ratio 0.1
 python3 preprocess_db.py --data_dir <path_to_eicu_csv_files> --db_name eicu --deid --timeshift --current_time "2105-12-31 23:59:00" --start_year 2100 --time_span 5 --cur_patient_ratio 0.1
 ```
 
