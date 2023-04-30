@@ -185,12 +185,11 @@ To access the databases, PhysioNet’s credentialed access (see license) is need
 - [MIMIC-III-1.4](https://physionet.org/content/mimiciii/1.4/)
 - [eICU-2.0](https://physionet.org/content/eicu-crd/2.0/)
 
-Once completed, run the code below to preprocess the databases. This step involves patient sampling, further de-identification, and time-shifting, and more.
+Once completed, run the code below to preprocess the database. This step involves patient sampling, further de-identification, and time-shifting, and more.
 
 ```
 cd preprocess
 python3 preprocess_db.py --data_dir <path_to_mimic_iii_csv_files> --db_name mimic_iii --deid --timeshift --current_time "2105-12-31 23:59:00" --start_year 2100 --time_span 5 --cur_patient_ratio 0.1
-python3 preprocess_db.py --data_dir <path_to_eicu_csv_files> --db_name eicu --deid --timeshift --current_time "2105-12-31 23:59:00" --start_year 2100 --time_span 5 --cur_patient_ratio 0.1
 ```
 
 
