@@ -6,6 +6,8 @@ EHRSQL is a large-scale, high-quality dataset designed for text-to-SQL question 
 
 Original paper reference: [EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records](https://arxiv.org/abs/2301.07695) (NeurIPS 2022 Datasets and Benchmarks). Please visit [the task website](https://glee4810.github.io/EHRSQL) for more general information on the project and a general introduction.
 
+As part of the course CS598: Deep Learning for Healthcare in Spring 2023, I chose to reproduce this paper and evaluate its merits. 
+
 ### Steps followed to reproduce the original study: 
 1) Created an AWS ec2 instance, Linux AMI, t3.2xlarge with 8vCPUs, volume of size 500 GiB. 
 2) Cloned original EHRSQL repo:
