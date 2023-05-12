@@ -236,11 +236,12 @@ Ask us questions on our Github issues page or contact gyubok.lee@kaist.ac.kr.
 When you use the EHRSQL dataset, we would appreciate it if you cite the following:
 
 ```
-@inproceedings{lee2022ehrsql,
-  title     = {{EHRSQL}: A Practical Text-to-{SQL} Benchmark for Electronic Health Records},
-  author    = {Gyubok Lee and Hyeonji Hwang and Seongsu Bae and Yeonsu Kwon and Woncheol Shin and Seongjun Yang and Minjoon Seo and Jong-Yeup Kim and Edward Choi},
-  booktitle = {Thirty-sixth Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
-  year      = {2022},
-  url       = {https://openreview.net/forum?id=B2W8Vy0rarw}
+@article{lee2022ehrsql,
+  title={EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records},
+  author={Lee, Gyubok and Hwang, Hyeonji and Bae, Seongsu and Kwon, Yeonsu and Shin, Woncheol and Yang, Seongjun and Seo, Minjoon and Kim, Jong-Yeup and Choi, Edward},
+  journal={Advances in Neural Information Processing Systems},
+  volume={35},
+  pages={15589--15601},
+  year={2022}
 }
 ```
