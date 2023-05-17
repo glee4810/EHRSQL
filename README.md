@@ -28,7 +28,7 @@ pip install pandas
 pip install dask
 pip install scikit-learn
 pip install func-timeout
-pip install transformers==4.19.2
+pip install transformers==4.19.2 # 4.29.2 works too
 pip install sentencepiece
 pip install wandb # if needed
 ```
