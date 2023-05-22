@@ -12,7 +12,7 @@ def parse_args():
     args.add_argument('--api_key_path', default='OPENAI_API_KEY.json', type=str, help='path for openai api key')
     args.add_argument('--prompt_path', default='', type=str, help='path for prompt')
     args.add_argument('--test_data_path', required=True, type=str, help='eval data path')
-    args.add_argument('--infernece_result_path', default='./', type=str, help='path for inference')
+    args.add_argument('--inference_result_path', default='./', type=str, help='path for inference')
     args.add_argument('--output_file', default='prediction.json', type=str, help='outnput file name')
     return args.parse_args()
 
@@ -63,7 +63,7 @@ if __name__ == '__main__':
                 time.sleep(60)
         result[id_] = pred
 
-    os.makedirs(args.infernece_result_path, exist_ok=True)
-    out_file = os.path.join(args.infernece_result_path, args.output_file)
+    os.makedirs(args.inference_result_path, exist_ok=True)
+    out_file = os.path.join(args.inference_result_path, args.output_file)
     with open(out_file, 'w') as f:
         json.dump(result, f)

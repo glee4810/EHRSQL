@@ -5,7 +5,7 @@ import warnings
 
 def parse_args():
     args = argparse.ArgumentParser()
-    args.add_argument('--infernece_result_path', required=True, type=str, help='path for inference')
+    args.add_argument('--inference_result_path', required=True, type=str, help='path for inference')
     args.add_argument('--input_file', default='prediction_raw.json', type=str, help='path for inference')
     args.add_argument('--output_file', default='prediction.json', type=str, help='path for inference')    
     args.add_argument("--threshold", type=float, default=-1, help='entropy threshold to abstrain from answering')
@@ -18,7 +18,7 @@ if __name__ == '__main__':
         warnings.warn("Threshold value is not set! All predictions are sent to the database.")
     threshold = args.threshold if args.threshold != -1 else float('inf')
 
-    input_file = os.path.join(args.infernece_result_path, args.input_file)
+    input_file = os.path.join(args.inference_result_path, args.input_file)
     with open(input_file, 'r') as f:
         data = json.load(f)
 
@@ -31,6 +31,6 @@ if __name__ == '__main__':
             pred = 'null'
         result[id_] = pred
 
-    out_file = os.path.join(args.infernece_result_path, args.output_file)
+    out_file = os.path.join(args.inference_result_path, args.output_file)
     with open(out_file, 'w') as f:
         json.dump(result, f)
