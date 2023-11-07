@@ -55,23 +55,23 @@ The `train.json` file contains the following fields for each database:
 - `id`: a unique ID for each data instance
 
 ```json
- {
-    "db_id": "mimic_iii",
-    "question": "tell me the method of intake of clobetasol propionate 0.05% ointment?",
-    "template": "what is the intake method of clobetasol propionate 0.05% ointment?",
-    "query": "select distinct prescriptions.route from prescriptions where prescriptions.drug = 'clobetasol propionate 0.05% ointment'",
-    "value": {"drug_name": "clobetasol propionate 0.05% ointment"},
-    "q_tag": "what is the intake method of {drug_name}?",
-    "t_tag": "["", "", "", "", ""]",
-    "o_tag": "["", "", "", "", "", "", "", "", ""]",
+  {
+    "db_id": "mimic_iii", 
+    "question": "what is the ingesting method of methimazole?", 
+    "template": "what is the intake method of methimazole?", 
+    "query": "select distinct prescriptions.route from prescriptions where prescriptions.drug = 'methimazole'", 
+    "value": {"drug_name": "methimazole"},
+    "q_tag": "what is the intake method of {drug_name}?", 
+    "t_tag": ["", "", "", "", ""], 
+    "o_tag": ["", "", "", "", "", "", "", "", ""], 
     "tag": "what is the intake method of {drug_name}?",
     "department": "['nursing']",
-    "importance": "medium",
-    "para_type": "machine",
+    "importance": "medium", 
+    "para_type": "machine", 
     "is_impossible": false,
-    "split": "train",
-    "id": "294c4222b4ad35fbe4fb9801"
-}
+    "split": "train", 
+    "id": "75379177b6a56fb54e946591"
+  }
 ```
 
 In `valid.json`, answerable instances have the same structure as `train.json`. However, unanswerable instances have fewer fields.
@@ -87,7 +87,6 @@ In `valid.json`, answerable instances have the same structure as `train.json`. H
     "id": "9db3a82be08e143d7976b015"
 }
 ```
-
 
 
 #### Tables
