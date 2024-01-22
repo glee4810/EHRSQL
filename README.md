@@ -217,8 +217,8 @@ python gpt/codex.py --api_key_path <api_key_path> --test_data_path dataset/ehrsq
 
 To evaluate the generated SQL queries, run the code below. This code is compatible with both T5 and Codex SQL generation outputs.
 ```
-python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --data_file dataset/ehrsql/mimic_iii/valid.json --pred_file ./outputs/eval_ehrsql_mimic3_t5_base__mimic3_valid/prediction.json
-python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.db --data_file dataset/ehrsql/mimic_iii/valid.json --pred_file ./outputs/eval_ehrsql_mimic3_codex__mimic3_valid/prediction.json
+python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.sqlite --data_file dataset/ehrsql/mimic_iii/valid.json --pred_file ./outputs/eval_ehrsql_mimic3_t5_base__mimic3_valid/prediction.json
+python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.sqlite --data_file dataset/ehrsql/mimic_iii/valid.json --pred_file ./outputs/eval_ehrsql_mimic3_codex__mimic3_valid/prediction.json
 ```
 
 

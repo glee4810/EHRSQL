@@ -40,9 +40,9 @@ class Build_eICU(Sampler):
             self.time_span = time_span
             self.current_time = current_time
 
-        self.conn = sqlite3.connect(os.path.join(self.out_dir, db_name+'.db'))
+        self.conn = sqlite3.connect(os.path.join(self.out_dir, db_name+'.sqlite'))
         self.cur = self.conn.cursor()
-        with open(os.path.join(self.out_dir, db_name+'.sqlite'), 'r') as sql_file:
+        with open(os.path.join(self.out_dir, db_name+'.sql'), 'r') as sql_file:
             sql_script = sql_file.read()
         self.cur.executescript(sql_script)
 

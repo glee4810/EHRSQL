@@ -3,7 +3,7 @@ CREATE TABLE patient
 (
     uniquepid VARCHAR(10) NOT NULL,
     patienthealthsystemstayid INT NOT NULL,
-    patientunitstayid INT NOT NULL,
+    patientunitstayid INT NOT NULL PRIMARY KEY,
     gender VARCHAR(25) NOT NULL,
     age VARCHAR(10) NOT NULL,
     ethnicity VARCHAR(50),
@@ -17,111 +17,105 @@ CREATE TABLE patient
     unitadmittime TIMESTAMP(0) NOT NULL,
     unitdischargetime TIMESTAMP(0),
     hospitaldischargetime TIMESTAMP(0),
-    hospitaldischargestatus VARCHAR(10),
-    CONSTRAINT pat_uniquepid_unique UNIQUE (patientunitstayid),
-    CONSTRAINT pat_uniquepid_pk PRIMARY KEY (patientunitstayid)
+    hospitaldischargestatus VARCHAR(10)
 ) ;
 
 DROP TABLE IF EXISTS diagnosis;
 CREATE TABLE diagnosis
 (
-    diagnosisid INT NOT NULL,
+    diagnosisid INT NOT NULL PRIMARY KEY,
     patientunitstayid INT NOT NULL,
     diagnosisname VARCHAR(200) NOT NULL,
     diagnosistime TIMESTAMP(0) NOT NULL,
     icd9code VARCHAR(100),
-    CONSTRAINT diagnosis_diagnosisid_unique UNIQUE (diagnosisid),
-    CONSTRAINT diagnosis_diagnosisid_pk PRIMARY KEY (diagnosisid)        
+    FOREIGN KEY(patientunitstayid) REFERENCES patient(patientunitstayid)
 ) ;
 
 DROP TABLE IF EXISTS treatment;
 CREATE TABLE treatment
 (
-    treatmentid INT NOT NULL,
+    treatmentid INT NOT NULL PRIMARY KEY,
     patientunitstayid INT NOT NULL,
     treatmentname VARCHAR(200) NOT NULL,
     treatmenttime TIMESTAMP(0) NOT NULL,
-    CONSTRAINT treatment_treatmentid_unique UNIQUE (treatmentid),
-    CONSTRAINT treatment_treatmentid_pk PRIMARY KEY (treatmentid)            
+    FOREIGN KEY(patientunitstayid) REFERENCES patient(patientunitstayid)
 ) ;
 
 DROP TABLE IF EXISTS lab;
 CREATE TABLE lab
 (
-    labid INT NOT NULL,
+    labid INT NOT NULL PRIMARY KEY,
     patientunitstayid INT NOT NULL,
     labname VARCHAR(256) NOT NULL,
     labresult NUMERIC(11,4) NOT NULL,
     labresulttime TIMESTAMP(0) NOT NULL,
-    CONSTRAINT lab_labid_unique UNIQUE (labid),
-    CONSTRAINT lab_labid_pk PRIMARY KEY (labid)
+    FOREIGN KEY(patientunitstayid) REFERENCES patient(patientunitstayid)
 ) ;
 
 DROP TABLE IF EXISTS medication;
 CREATE TABLE medication
 (
-    medicationid INT NOT NULL,
+    medicationid INT NOT NULL PRIMARY KEY,
     patientunitstayid INT NOT NULL,
     drugname VARCHAR(220) NOT NULL,
     dosage VARCHAR(60) NOT NULL,
     routeadmin VARCHAR(120) NOT NULL,
     drugstarttime TIMESTAMP(0),
     drugstoptime TIMESTAMP(0),
-    CONSTRAINT medication_medicationid_unique UNIQUE (medicationid),
-    CONSTRAINT medication_medicationid_pk PRIMARY KEY (medicationid)
+    FOREIGN KEY(patientunitstayid) REFERENCES patient(patientunitstayid)
 ) ;
 
 DROP TABLE IF EXISTS cost;
 CREATE TABLE cost
 (
-    costid INT NOT NULL,
+    costid INT NOT NULL PRIMARY KEY,
     uniquepid VARCHAR(10) NOT NULL,
     patienthealthsystemstayid INT NOT NULL,
     eventtype VARCHAR(20) NOT NULL,
     eventid INT NOT NULL,
     chargetime TIMESTAMP(0) NOT NULL,
     cost DOUBLE PRECISION NOT NULL,
-    CONSTRAINT cost_costid_pk PRIMARY KEY (costid)
+    FOREIGN KEY(patienthealthsystemstayid) REFERENCES patient(patienthealthsystemstayid)
 ) ;
 
 DROP TABLE IF EXISTS allergy;
 CREATE TABLE allergy
 (
-    allergyid INT NOT NULL,
+    allergyid INT NOT NULL PRIMARY KEY,
     patientunitstayid INT NOT NULL,
     drugname VARCHAR(255),
     allergyname VARCHAR(255) NOT NULL,
     allergytime TIMESTAMP(0) NOT NULL,
-    CONSTRAINT allergy_allergyid_pk PRIMARY KEY (allergyid)
+    FOREIGN KEY(patientunitstayid) REFERENCES patient(patientunitstayid)
 ) ;
 
 DROP TABLE IF EXISTS intakeoutput;
 CREATE TABLE intakeoutput
 (
-    intakeoutputid INT NOT NULL,
+    intakeoutputid INT NOT NULL PRIMARY KEY,
     patientunitstayid INT NOT NULL,
     cellpath VARCHAR(500) NOT NULL,
     celllabel VARCHAR(255) NOT NULL,
     cellvaluenumeric NUMERIC(12,4) NOT NULL,
     intakeoutputtime TIMESTAMP(0) NOT NULL,
-    CONSTRAINT intakeoutput_intakeoutputid_pk PRIMARY KEY (intakeoutputid)
+    FOREIGN KEY(patientunitstayid) REFERENCES patient(patientunitstayid)
 ) ;
 
 DROP TABLE IF EXISTS microlab;
 CREATE TABLE microlab
 (
-    microlabid INT NOT NULL,
+    microlabid INT NOT NULL PRIMARY KEY,
     patientunitstayid INT NOT NULL,
     culturesite VARCHAR(255) NOT NULL,
     organism VARCHAR(255) NOT NULL,
     culturetakentime TIMESTAMP(0) NOT NULL,
-    CONSTRAINT microlab_microlabid_pk PRIMARY KEY (microlabid)
+    FOREIGN KEY(patientunitstayid) REFERENCES patient(patientunitstayid)
 ) ;
 
 DROP TABLE IF EXISTS vitalperiodic;
 CREATE TABLE vitalperiodic
 (
-    vitalperiodicid BIGINT NOT NULL,
+    vitalperiodicid BIGINT NOT NULL PRIMARY KEY,
     patientunitstayid INT NOT NULL,
     temperature NUMERIC(11,4),
     sao2 INT,
@@ -130,7 +124,6 @@ CREATE TABLE vitalperiodic
     systemicsystolic INT,
     systemicdiastolic INT,
     systemicmean INT,
-    observationtime TIMESTAMP(0) NOT NULL,    
-    CONSTRAINT vitalperiodic_vitalperiodicid_pk PRIMARY KEY (vitalperiodicid)    
+    observationtime TIMESTAMP(0) NOT NULL,
+    FOREIGN KEY(patientunitstayid) REFERENCES patient(patientunitstayid)
 ) ;
-

@@ -52,10 +52,6 @@ def post_process_sql(query,
     query = query.replace("'now'", f"'{current_time}'")
     return query
 
-exec_result = []
-def result_tracker(result):
-    exec_result.append(result)
-
 def process_answer(ans):
     return str(sorted([str(ret) for ret in ans[:100]])) # check only up to 100th record
 
@@ -91,11 +87,18 @@ def execute_query(sql1, sql2, args, data_idx=None):
     return result
 
 def execute_query_distributed(real, pred, db_path, num_workers):
+
+    exec_result = []
+    def result_tracker(result):
+        exec_result.append(result)
+
     pool = mp.Pool(processes=num_workers)
     for data_idx, (sql1, sql2) in enumerate(zip(real, pred)):
         pool.apply_async(execute_query, args=(sql1, sql2, args, data_idx), callback = result_tracker)
     pool.close()
     pool.join()
+
+    return exec_result
 
 def main(args):
     num_workers = mp.cpu_count() if args.num_workers==-1 else args.num_workers
@@ -120,7 +123,7 @@ def main(args):
     exec_real = []
     exec_pred = []
     if num_workers>1:
-        execute_query_distributed(query_real, query_pred, args.db_path, num_workers)
+        exec_result = execute_query_distributed(query_real, query_pred, args.db_path, num_workers)
         indices = []
         for ret in exec_result:
             exec_real.append(ret['real'])
