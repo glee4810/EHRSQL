@@ -5,9 +5,11 @@ EHRSQL is a large-scale, high-quality dataset designed for text-to-SQL question 
 The dataset is released along with our paper titled [EHRSQL: A Practical Text-to-SQL Benchmark for Electronic Health Records](https://arxiv.org/abs/2301.07695) (NeurIPS 2022 Datasets and Benchmarks). For further details, please refer to our paper.
 
 
-## Changelog
+## News
 
-`04/30/2023` We corrected minor annotation errors and label inconsistencies in the dataset. Please download the updated version.
+`02/06/2024` We are currently working on building EHRSQL 1.1, which is connected to the demo versions of MIMIC and eICU databases (released in a month!).
+`01/29/2024` EHRSQL MIMIC-IV is being used as one of the shared tasks at NAACL-ClinicalNLP 2024. For more information, please visit https://sites.google.com/view/ehrsql-2024.
+`09/21/2022` EHRSQL has been accepted to NeurIPS 2022 Datasets and Benchmarks ([3/447](https://papercopilot.com/statistics/neurips-statistics/neurips-2022-statistics-datasets-benchmarks/))!
 
 
 ## Getting Started
