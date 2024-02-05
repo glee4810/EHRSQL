@@ -14,7 +14,7 @@ The dataset is released along with our paper titled [EHRSQL: A Practical Text-to
 
 `01/29/2024` EHRSQL MIMIC-IV is being used as one of the shared tasks at [NAACL](https://2024.naacl.org/)-[ClinicalNLP 2024](https://clinical-nlp.github.io/2024/call-for-papers.html). For more information, please visit https://sites.google.com/view/ehrsql-2024.
 
-`09/21/2022` EHRSQL has been accepted to NeurIPS 2022 Datasets and Benchmarks ([3/447](https://papercopilot.com/statistics/neurips-statistics/neurips-2022-statistics-datasets-benchmarks/))!
+`09/21/2022` EHRSQL has been accepted to NeurIPS 2022 Datasets and Benchmarks ([3/163](https://papercopilot.com/statistics/neurips-statistics/neurips-2022-statistics-datasets-benchmarks/))!
 
 
 ## Getting Started
