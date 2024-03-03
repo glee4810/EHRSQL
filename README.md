@@ -10,7 +10,9 @@ The dataset is released along with our paper titled [EHRSQL: A Practical Text-to
 
 ## News
 
-`02/06/2024` We are currently working on building EHRSQL 1.1, which will be connected to the demo versions of MIMIC and eICU databases (released in a month!).
+`03/03/2024` Due to the ongoing shared task, we will release both the full EHRSQL dataset (including the test sets) and its upgraded version (connected to the demo EHRs) after the completion of the shared task.
+
+~`02/06/2024` In a month, we will release an updated version of EHRSQL. It will connect to the demo versions of the MIMIC and eICU databases and will not have value shuffling in questions and SQL queries.~
 
 `01/29/2024` EHRSQL MIMIC-IV is being used as one of the shared tasks at [NAACL](https://2024.naacl.org/)-[ClinicalNLP 2024](https://clinical-nlp.github.io/2024/call-for-papers.html). For more information, please visit https://sites.google.com/view/ehrsql-2024.
 
