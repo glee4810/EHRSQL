@@ -31,7 +31,7 @@ git clone https://github.com/glee4810/EHRSQL.git
 cd EHRSQL
 conda create -n ehrsql python=3.7
 conda activate ehrsql
-pip install pandas
+pip install pandas==1.5.3
 pip install dask
 pip install scikit-learn
 pip install func-timeout
