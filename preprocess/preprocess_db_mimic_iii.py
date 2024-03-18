@@ -131,8 +131,8 @@ class Build_MIMIC_III(Sampler):
 
         # process admissions
         if self.timeshift:
-            ADMISSIONS_table["ADMITTIME"] = adjust_time(ADMISSIONS_table, "ADMITTIME", current_time=self.current_time, offset_dict=self.subjectid2admittime_dict, patient_col="SUBJECT_ID"
-            ADMISSIONS_table = ADMISSIONS_table.dropna(subset=["ADMITTIME"]))
+            ADMISSIONS_table["ADMITTIME"] = adjust_time(ADMISSIONS_table, "ADMITTIME", current_time=self.current_time, offset_dict=self.subjectid2admittime_dict, patient_col="SUBJECT_ID")
+            ADMISSIONS_table = ADMISSIONS_table.dropna(subset=["ADMITTIME"])
             ADMISSIONS_table["DISCHTIME"] = adjust_time(ADMISSIONS_table, "DISCHTIME", current_time=self.current_time, offset_dict=self.subjectid2admittime_dict, patient_col="SUBJECT_ID")
             ADMISSIONS_table['DISCHARGE_LOCATION'] = [loc if pd.notnull(t) else None for loc, t in zip(ADMISSIONS_table["DISCHARGE_LOCATION"], ADMISSIONS_table["DISCHTIME"])]
 
