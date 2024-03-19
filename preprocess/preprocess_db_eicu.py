@@ -51,19 +51,6 @@ class Build_eICU(Sampler):
             sql_script = sql_file.read()
         self.cur.executescript(sql_script)
 
-        # self.chartevent_dict = {
-        #     'body temperature'.lower(): 'vitalPeriodic.temperature'.lower(),
-        #     'SaO2'.lower(): 'vitalPeriodic.sao2'.lower(),
-        #     'heart rate'.lower(): 'vitalPeriodic.heartrate'.lower(),
-        #     'respiration rate'.lower(): 'vitalPeriodic.respiration'.lower(),
-        #     'systolic blood pressure'.lower(): 'vitalPeriodic.systemicsystolic'.lower(),
-        #     'diastolic blood pressure'.lower(): 'vitalPeriodic.systemicdiastolic'.lower(),
-        #     'mean blood pressure'.lower(): 'vitalPeriodic.systemicmean'.lower(),
-
-        #     'weight'.lower(): 'patient.admissionweight'.lower(),
-        #     'height'.lower(): 'patient.admissionheight'.lower()
-        # }
-
     def build_admission_table(self):
         print("Processing patient")
         start_time = time.time()
@@ -134,6 +121,7 @@ class Build_eICU(Sampler):
         uniquepid = patient_table["uniquepid"].unique()
         valid_uniquepid = []
         for pt_id in tqdm(uniquepid):
+
             cnt_total, cnt_processed = 0, 0
 
             msg = f"uniquepid=='{str(pt_id)}'"
@@ -201,7 +189,7 @@ class Build_eICU(Sampler):
         patient_table = patient_table.drop(columns=["hospitaldischargeyear", "hospitaladmittime24", "hospitaladmitoffset", "unitadmitoffset", "unitdischargeoffset", "hospitaldischargeoffset"])
         patient_table = patient_table.dropna(subset=["hospitaladmittime", "unitadmittime"])
         patient_table['hospitaldischargestatus'] = [loc if pd.notnull(t) else None for loc, t in zip(patient_table["hospitaldischargestatus"], patient_table["hospitaldischargetime"])]
-        patient_table['dischargeweight'] = [w if pd.notnull(t) else None for w, t in zip(patient_table["dischargeweight"], patient_table["hospitaldischargetime"])]        
+        patient_table['dischargeweight'] = [w if pd.notnull(t) else None for w, t in zip(patient_table["dischargeweight"], patient_table["hospitaldischargetime"])]
 
         if self.timeshift:
             num_valid_cur_patient = len(patient_table["uniquepid"][patient_table["hospitaldischargetime"].isnull()].unique())
@@ -210,11 +198,8 @@ class Build_eICU(Sampler):
             self.cur_patient_list = self.rng.choice(patient_table["uniquepid"][patient_table["hospitaldischargetime"].isnull()].unique(), self.num_cur_patient, replace=False).tolist()
         else:
             self.cur_patient_list = []
-        self.not_cur_patient = self.rng.choice(
-            patient_table["uniquepid"][(patient_table["hospitaldischargetime"].notnull()) & (~patient_table["uniquepid"].isin(self.cur_patient_list))].unique(), self.num_not_cur_patient, replace=False
-        ).tolist()
+        self.not_cur_patient = self.rng.choice(patient_table["uniquepid"][(patient_table["hospitaldischargetime"].notnull()) & (~patient_table["uniquepid"].isin(self.cur_patient_list))].unique(), self.num_not_cur_patient, replace=False).tolist()
         self.patient_list = self.cur_patient_list + self.not_cur_patient
-
         patient_table = patient_table[patient_table["uniquepid"].isin(self.patient_list)]
         self.icu_list = patient_table["patientunitstayid"].values.tolist()
 

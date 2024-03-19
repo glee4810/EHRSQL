@@ -85,16 +85,16 @@ class Build_MIMIC_III(Sampler):
             for pid, admtime in zip(ADMISSIONS_table["SUBJECT_ID"].values, ADMISSIONS_table["ADMITTIME"].values)
         ]
 
-        # # remove age outliers
-        # ADMISSIONS_table = ADMISSIONS_table[(ADMISSIONS_table["AGE"] > 10) & (ADMISSIONS_table["AGE"] < 90)]
+        # remove age outliers
+        ADMISSIONS_table = ADMISSIONS_table[(ADMISSIONS_table["AGE"] > 10) & (ADMISSIONS_table["AGE"] < 90)]
 
-        # # remove hospital stay outlier
-        # hosp_stay_dict = {
-        #     hosp: (datetime.strptime(dischtime, "%Y-%m-%d %H:%M:%S") - datetime.strptime(admtime, "%Y-%m-%d %H:%M:%S")).days
-        #     for hosp, admtime, dischtime in zip(ADMISSIONS_table["HADM_ID"].values, ADMISSIONS_table["ADMITTIME"].values, ADMISSIONS_table["DISCHTIME"].values)
-        # }
-        # threshold_offset = np.percentile(list(hosp_stay_dict.values()), q=95)  # remove greater than 95% ≈ 28 days
-        # ADMISSIONS_table = ADMISSIONS_table[ADMISSIONS_table["HADM_ID"].isin([hosp for hosp in hosp_stay_dict if hosp_stay_dict[hosp] < threshold_offset])]
+        # remove hospital stay outlier
+        hosp_stay_dict = {
+            hosp: (datetime.strptime(dischtime, "%Y-%m-%d %H:%M:%S") - datetime.strptime(admtime, "%Y-%m-%d %H:%M:%S")).days
+            for hosp, admtime, dischtime in zip(ADMISSIONS_table["HADM_ID"].values, ADMISSIONS_table["ADMITTIME"].values, ADMISSIONS_table["DISCHTIME"].values)
+        }
+        threshold_offset = np.percentile(list(hosp_stay_dict.values()), q=95)  # remove greater than 95% ≈ 28 days
+        ADMISSIONS_table = ADMISSIONS_table[ADMISSIONS_table["HADM_ID"].isin([hosp for hosp in hosp_stay_dict if hosp_stay_dict[hosp] < threshold_offset])]
 
         # save original admittime
         self.HADM_ID2admtime_dict = {hadm: admtime for hadm, admtime in zip(ADMISSIONS_table["HADM_ID"].values, ADMISSIONS_table["ADMITTIME"].values)}
@@ -470,8 +470,13 @@ class Build_MIMIC_III(Sampler):
         print("Processing CHARTEVENTS table")
         start_time = time.time()
 
-        CHARTEVENTS_table = read_csv(self.data_dir, "CHARTEVENTS.csv", columns=["ROW_ID", "SUBJECT_ID", "HADM_ID", "ICUSTAY_ID", "ITEMID", "CHARTTIME", "VALUENUM", "VALUEUOM"], lower=True)
+        CHARTEVENTS_table = read_csv(
+            self.data_dir, "CHARTEVENTS.csv", dtype={"SUBJECT_ID": int,"ITEMID": str, "ICUSTAY_ID": "float64", "RESULTSTATUS": "object", "CGID": "float64", "ERROR": "float64", "STOPPED": "object", "VALUE": "object", "WARNING": "float64"},
+                                                                       columns=["ROW_ID", "SUBJECT_ID", "HADM_ID", "ICUSTAY_ID", "ITEMID", "CHARTTIME", "VALUENUM", "VALUEUOM"], lower=True,
+                                                                       filter={"ITEMID": self.chartevent2itemid.values(), "SUBJECT_ID": self.patient_list},                                                                       
+                                                                       memory_efficient=True)
         CHARTEVENTS_table = CHARTEVENTS_table.dropna(subset=["ROW_ID", "SUBJECT_ID", "HADM_ID", "ICUSTAY_ID", "ITEMID", "CHARTTIME", "VALUENUM", "VALUEUOM"])
+        # CHARTEVENTS_table = CHARTEVENTS_table.astype({"ROW_ID": int, "SUBJECT_ID": int, "HADM_ID": int, "ICUSTAY_ID": int, "ITEMID": int, "CHARTTIME": str, "VALUENUM": float, "VALUEUOM": str})
 
         if self.timeshift:  # changed order due to the large number of rows in CHARTEVENTS_table
             CHARTEVENTS_table["CHARTTIME"] = adjust_time(CHARTEVENTS_table, "CHARTTIME", current_time=self.current_time, offset_dict=self.subjectid2admittime_dict, patient_col="SUBJECT_ID")
