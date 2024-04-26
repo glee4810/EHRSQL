@@ -21,6 +21,7 @@ class Build_eICU(Sampler):
         out_dir,
         db_name,
         num_patient,
+        sample_icu_patient_only=None,
         deid=False,
         timeshift=False,
         cur_patient_ratio=0.0,
@@ -50,6 +51,17 @@ class Build_eICU(Sampler):
         with open(os.path.join(self.out_dir, db_name + ".sql"), "r") as sql_file:
             sql_script = sql_file.read()
         self.cur.executescript(sql_script)
+
+        self.build_admission_table() # patient
+        self.build_diagnosis_table() # diagnosis
+        self.build_treatment_table() # treatment
+        self.build_lab_table() # lab
+        self.build_medication_table() # medication
+        self.build_cost_table() # cost
+        self.build_allergy_table() # allergy
+        self.build_intakeoutput_table() # intakeOutput
+        self.build_microlab_table() # microLab
+        self.build_vital_table() # vitalPeriodic
 
     def build_admission_table(self):
         print("Processing patient")
@@ -89,7 +101,7 @@ class Build_eICU(Sampler):
         patient_table = patient_table[patient_table["gender"].isin(["male", "female"])]
 
         # remove age outliers
-        patient_table = patient_table.replace({"age": "> 89"}, {"age": None})  # '>89' NaN replace
+        patient_table = patient_table.replace({"age": "> 89"}, {"age": "90"})
         patient_table = patient_table.dropna(subset=["age"])  # Remove NA in age
         patient_table = patient_table.astype({"age": int})  # Change age type to int
         patient_table = patient_table[patient_table["age"] > 10]

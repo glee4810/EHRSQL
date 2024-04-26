@@ -20,7 +20,7 @@ class Build_MIMIC_III(Sampler):
         out_dir,
         db_name,
         num_patient,
-        sample_icu_patient_only,
+        sample_icu_patient_only=False,
         deid=False,
         timeshift=False,
         cur_patient_ratio=0.0,
@@ -64,6 +64,18 @@ class Build_MIMIC_III(Sampler):
             "Admit Wt".lower(): "762",  # weight
             "Admit Ht".lower(): "920",  # height
         }
+
+        self.build_admission_table() # PATIENTS, ADMISSIONS, ICUSTAYS, TRANSFERS
+        self.build_dictionary_table() # D_ICD_DIAGNOSES, D_ICD_PROCEDURES, D_ITEMS, D_LABITEMS
+        self.build_diagnosis_table() # DIAGNOSES_ICD
+        self.build_procedure_table() # PROCEDURES_ICD
+        self.build_labevent_table() # LABEVENTS
+        self.build_prescriptions_table() # PRESCRIPTIONS
+        self.build_cost_table() # COST
+        self.build_chartevent_table() # CHARTEVENTS
+        self.build_inputevent_table() # INPUTEVENTS_CV
+        self.build_outputevent_table() # OUTPUTEVENTS
+        self.build_microbiology_table() # MICROBIOLOGYEVENTS
 
     def build_admission_table(self):
         print("Processing PATIENTS, ADMISSIONS, ICUSTAYS, TRANSFERS")

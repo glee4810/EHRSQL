@@ -101,6 +101,10 @@ def execute_query_distributed(real, pred, db_path, num_workers):
     return exec_result
 
 def main(args):
+
+    if not os.path.exists(args.db_path):
+        raise Exception('Database does not exist: %s' % args.db_path)
+    
     num_workers = mp.cpu_count() if args.num_workers==-1 else args.num_workers
     with open(args.data_file, 'r') as f:
         data = json.load(f)

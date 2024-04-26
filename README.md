@@ -214,20 +214,11 @@ python T5/abstain_with_entropy.py --inference_result_path outputs/eval_ehrsql_mi
 ```
 
 
-### Codex SQL Generation
-
-To generate SQL queries with Codex, run the code below. It is important to note that the ability to abstain has not been implemented in the current version of the Codex run script.
-```
-python gpt/codex.py --api_key_path <api_key_path> --test_data_path dataset/ehrsql/mimic_iii/valid.json --inference_result_path outputs/eval_ehrsql_mimic3_codex__mimic3_valid --output_file prediction.json --prompt_path gpt/prompts/codex_apidoc.txt
-```
-
-
 ### Evaluation
 
-To evaluate the generated SQL queries, run the code below. This code is compatible with both T5 and Codex SQL generation outputs.
+To evaluate the generated SQL queries, run the code below.
 ```
 python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.sqlite --data_file dataset/ehrsql/mimic_iii/valid.json --pred_file ./outputs/eval_ehrsql_mimic3_t5_base__mimic3_valid/prediction.json
-python evaluate.py --db_path ./dataset/ehrsql/mimic_iii/mimic_iii.sqlite --data_file dataset/ehrsql/mimic_iii/valid.json --pred_file ./outputs/eval_ehrsql_mimic3_codex__mimic3_valid/prediction.json
 ```
 
 
