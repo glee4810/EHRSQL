@@ -10,13 +10,11 @@ The dataset is released along with our paper titled [EHRSQL: A Practical Text-to
 
 ## News
 
-<!-- `03/03/2024` Due to the ongoing shared task, we will release both the full EHRSQL dataset (including the test sets) and its upgraded version (connected to the demo EHRs) after the completion of the shared task. -->
-
-<!-- ~`02/06/2024` In a month, we will release an updated version of EHRSQL. It will connect to the demo versions of the MIMIC and eICU databases and will not have value shuffling in questions and SQL queries.~ -->
+`06/22/2024` The complete data for the [newest EHRSQL data (MIMIC-IV demo)](https://github.com/glee4810/ehrsql-2024) has been released along with the [EHRSQL 2024 Shared Task Ovewview Paper](https://arxiv.org/abs/2405.06673).
 
 `04/27/2024` We have released the entire EHRSQL dataset (including test sets) to the public.
 
-`01/29/2024` EHRSQL MIMIC-IV is being used as one of the shared tasks at [NAACL](https://2024.naacl.org/)-[ClinicalNLP 2024](https://clinical-nlp.github.io/2024/call-for-papers.html). For more information, please visit https://sites.google.com/view/ehrsql-2024.
+`01/29/2024` EHRSQL for MIMIC-IV is being used as one of the shared tasks at [NAACL 2024 - ClinicalNLP 2024](https://clinical-nlp.github.io/2024/call-for-papers.html). For more information, please visit https://sites.google.com/view/ehrsql-2024.
 
 `09/21/2022` EHRSQL has been accepted to NeurIPS 2022 Datasets and Benchmarks ([3/163](https://papercopilot.com/statistics/neurips-statistics/neurips-2022-statistics-datasets-benchmarks/))!
 
