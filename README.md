@@ -186,8 +186,26 @@ We follow the same table information style used in [Spider](https://github.com/t
 
 ### Database
 
-To access the databases, PhysioNet’s credentialed access (see license) is needed. Below are the links to the download pages.
+#### Option 1: Download Preprocessed Databases (Recommended)
 
+We provide preprocessed SQLite databases via Google Drive. Place them in the corresponding directories.
+
+| Database | Size | Download |
+|----------|------|----------|
+| MIMIC-III | 95 MB | [mimic_iii.sqlite](https://drive.google.com/file/d/17FkHhaQrmSz5-W2b7WEy90duKfvjBn5x/view?usp=sharing) |
+| eICU | 102 MB | [eicu.sqlite](https://drive.google.com/file/d/1JG9DUdeJeuIXShK6DdEJ61NEyPiaGEKZ/view?usp=sharing) |
+
+```
+# Place the downloaded files as follows:
+dataset/ehrsql/mimic_iii/mimic_iii.sqlite
+dataset/ehrsql/eicu/eicu.sqlite
+```
+
+> **Note**: These databases are derived from [MIMIC-III](https://physionet.org/content/mimiciii/1.4/) and [eICU](https://physionet.org/content/eicu-crd/2.0/). Patient values have been shuffled and are not linked to original records; the databases are intended for SQL query evaluation, not for clinical analysis.
+
+#### Option 2: Build from Source
+
+To build the databases from scratch, PhysioNet’s credentialed access is needed. Below are the links to the download pages.
 
 - [MIMIC-III-1.4](https://physionet.org/content/mimiciii/1.4/)
 - [eICU-2.0](https://physionet.org/content/eicu-crd/2.0/)
