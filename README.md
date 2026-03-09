@@ -10,6 +10,8 @@ The dataset is released along with our paper titled [EHRSQL: A Practical Text-to
 
 ## News
 
+`03/09/2026` **v.1.5.0** released: improved annotation quality (SQL fixes + question naturalness). See [CHANGELOG](dataset/ehrsql/CHANGELOG.md) for details.
+
 `06/22/2024` The complete data for the [newest EHRSQL data (MIMIC-IV demo)](https://github.com/glee4810/ehrsql-2024) has been released along with the [EHRSQL 2024 Shared Task Overview Paper](https://arxiv.org/abs/2405.06673).
 
 `04/27/2024` We have released the entire EHRSQL dataset (including test sets) to the public.

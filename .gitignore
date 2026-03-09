@@ -1,0 +1,23 @@
+# Database files
+*.sqlite
+*.db
+
+# Preprocessed CSV files
+dataset/ehrsql/mimic_iii/*.csv
+dataset/ehrsql/eicu/*.csv
+
+# Paper source
+EHRSQL__A_Practical_Text_to_SQL_Benchmark_for_Electronic_Health_Records___arXiv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Outputs
+outputs/
+
+# Misc
+.DS_Store
+*.swp
+wandb/
