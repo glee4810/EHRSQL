@@ -12,7 +12,6 @@ This release improves annotation quality across all 6 dataset files (mimic\_iii 
 | SQL: IS NOT NULL guards | 148 | Fix NULL propagation on discharge columns |
 | SQL: COUNT DISTINCT | 97 | Fix counting prescriptions vs distinct drugs |
 | Question: naturalness rewrite | 24,405 | Grammar, capitalization, time expressions |
-| Question: value verbatim fix | 2,622 | Restore exact DB values in question text |
 | Question: formatting & grammar | ~165 | Date format, singular/plural, pronouns |
 | Question: surgery → procedure | 110 | Align with schema terminology |
 
@@ -56,11 +55,7 @@ All questions rewritten by GPT-4o-mini to fix:
 
 Each rewrite verified by a second LLM call. Failed verifications re-rewritten (up to 2 rounds). Final LLM semantic verification (22,505 items) found and fixed 19 time direction errors.
 
-#### 2. Value verbatim restoration (2,622 questions)
-
-The text-to-SQL model copies values from the question into SQL. LLM rewrites inadvertently altered some values (``500mg'' → ``500 mg'', ``protein, total'' → ``total protein''). All mismatches detected via fuzzy matching and restored to exact DB values.
-
-#### 3. Additional grammar & formatting (~165 questions)
+#### 2. Additional grammar & formatting (~165 questions)
 
 | Fix | Count | Example |
 |---|---|---|
@@ -71,7 +66,7 @@ The text-to-SQL model copies values from the question into SQL. LLM rewrites ina
 | Tense | 1 | ``did patient received'' → ``did patient receive'' |
 | Broken sentence | 1 | Garbled LLM output → restored from template |
 
-#### 4. surgery → procedure (110 questions)
+#### 3. surgery → procedure (110 questions)
 
 Replaced ``surgery'' with ``procedure'' in question text to align with the schema and SQL.
 
@@ -82,7 +77,6 @@ Replaced ``surgery'' with ``procedure'' in question text to align with the schem
 All changes verified with zero tolerance:
 
 - **SQL execution**: 22,505/22,505 queries execute successfully (`current_time='2105-12-31 23:59:00'`)
-- **Value verbatim**: 0 mismatches (all SQL WHERE clause values appear exactly in question text)
 - **Time direction**: 0 conflicts between question phrasing and SQL comparison operators
 - **Patient ID**: 0 missing or altered patient IDs
 - **Year range**: All years within 2100--2105
