@@ -1,5 +1,21 @@
 # EHRSQL Dataset Changelog
 
+## v.1.5.1
+
+This release applies minor question text edits across all 6 dataset files (mimic\_iii + eicu, train/valid/test). Question semantics are preserved; SQL, schema, task definition, and annotation structure are unchanged. All 22,505 SQL queries continue to execute successfully.
+
+### Summary
+
+| Category | Description |
+|---|---|
+| Time expressions | Reverted LLM paraphrases to template-style forms (`12/this year` → `December of this year`, `up to until N years ago` → `until N years ago`, etc.) |
+| Imperative punctuation | `count` / `calculate` / `tell` / ... style sentences end with `.` instead of `?` |
+| eICU vital tokens | Split into natural English (`heartrate` → `heart rate`, `Sao2` → `SaO2`, `systemic{mean,systolic,diastolic}` → two words) |
+| Comparison/change questions | Rewritten for clarity |
+| Misc | Capitalization, trailing quote, typo fixes |
+
+---
+
 ## v.1.5.0 (2026-03-09)
 
 This release improves annotation quality across all 6 dataset files (mimic\_iii + eicu, train/valid/test). All 22,505 SQL queries execute successfully. No schema, task definition, or annotation structure changes.
