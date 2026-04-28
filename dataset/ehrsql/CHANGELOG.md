@@ -1,6 +1,6 @@
 # EHRSQL Dataset Changelog
 
-## v.1.5.1
+## v.1.5.1 (2026-04-28)
 
 This release applies minor question text edits across all 6 dataset files (mimic\_iii + eicu, train/valid/test). Question semantics are preserved; SQL, schema, task definition, and annotation structure are unchanged. All 22,505 SQL queries continue to execute successfully.
 
